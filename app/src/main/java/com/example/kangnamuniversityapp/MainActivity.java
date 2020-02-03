@@ -1,5 +1,6 @@
 package com.example.kangnamuniversityapp;
 
+import android.content.Context;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -76,9 +77,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRefresh() {//새로고침 하면
 
-                if(noticeArticleParsingThread.isAlive()==false){
-                    noticeArticleParsingThread.start();
-                }
+                loadUkkikki(url2);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -106,9 +105,9 @@ public class MainActivity extends AppCompatActivity{
 
                     Elements listArticle = document.selectFirst("div[class=tbody]").select("ul");// html tag 전부 찾아서 Elments로 만듦.
                     Log.e("Dsds", "count: " + listArticle.size());
-
+                    //noticeData.clear();
                     for (Element article : listArticle) {
-                        String title, author, num, time, type, file, views;
+                        final String title, author, num, time, type, file, views;
                         Elements listContent = article.select("li");
 
                         num = listContent.get(0).text();
@@ -118,8 +117,15 @@ public class MainActivity extends AppCompatActivity{
                         time = listContent.get(5).text();
                         file = "none";
                         views = "none";
-                        noticeData.clear();
-                        noticeData.add(new ArticleInfo(num, type, title, file, author, time, views));
+//                        MainActivity.this.runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                noticeData.clear();
+//                                mAdapter.notifyDataSetChanged();
+//                                noticeData.add(new ArticleInfo("num", "type", title, "file", author, time, "views"));
+//                            }
+//                        });
+                        noticeData.add(new ArticleInfo("num", "type", title, "file", author, time, "views"));
                         //널오류났었음^
 //                        Log.d("num : ", "["+num+"]");
 //                        Log.d("type : ", type);
@@ -147,16 +153,28 @@ public class MainActivity extends AppCompatActivity{
                             .useCookie(true)
                             .build();//Jsoup.connect(url).get();
                     Elements listArticle = document.select("li[class=board_box]");
+                    noticeData.clear();//클리어
+                    if(mAdapter!=null){
+                        mAdapter.notifyDataSetChanged(); // 안드로이드 버그 데이터셋 바뀜 명시
+                    }
                     for(Element article : listArticle){
-                        String title, author, time;
+                        final String title, author, time;
                         Element listContent = article.selectFirst("strong[class=tit]");
                         Log.d("우끼ㅣ끼끼ㅣ끼끼",listContent.text());
                         title = listContent.text();
                         author = article.selectFirst("span[class=ellip]").text();
                         time = article.selectFirst("span[class=time]").text();
-                        noticeData.clear();
-                        noticeData.add(new ArticleInfo("num", "type", title, "file", author, time, "views"));
+//                        noticeData.add(new ArticleInfo("num", "type", title, "file", author, time, "views"));
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+//                                noticeData.clear();//클리어를 여기서 하면 안되나? 위에 onCreate함수의 lsitener에 넣어볼까?
+                                mAdapter.notifyDataSetChanged();
+                                noticeData.add(new ArticleInfo("num", "type", title, "file", author, time, "views"));
+                            }
+                        });
                     }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -43,24 +43,7 @@ public class MainActivity extends AppCompatActivity{
         final Thread thread = loadUkkikki(url2);
         //thread.start();
 
-        noticeArticleParsingThread.start();// 쓰레드 시작
-        try {
-            noticeArticleParsingThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         recyclerView = (RecyclerView)findViewById(R.id.notice_article_recyclerView);
-
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(
-                new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        // do it
-                    }
-                }
-        );
-
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
@@ -73,12 +56,39 @@ public class MainActivity extends AppCompatActivity{
         mAdapter = new NoticeListAdaptor(this, noticeData);
         recyclerView.setAdapter(mAdapter);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+
+        noticeArticleParsingThread.start();// 쓰레드 시작
+//        try {
+//            noticeArticleParsingThread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener( // notice에 아이템 클릭되면
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        // do it
+                    }
+                }
+        );
+
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//새로고침 listener
             @Override
             public void onRefresh() {//새로고침 하면
-
-                loadUkkikki(url2);
+                loadUkkikki(url2).start();
                 swipeRefreshLayout.setRefreshing(false);//이거때문에 그런가 laodUkkikki를 다 확인하고 해야하나
+//                recyclerView.setAdapter(mAdapter);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(mAdapter);
+                    }
+                });
             }
         });
 
@@ -141,10 +151,11 @@ public class MainActivity extends AppCompatActivity{
         });
     } //
     private Thread loadUkkikki(final String url){
-        Log.d(",","asd");
         return new Thread(new Runnable() {
             @Override
             public void run() {
+                Log.d("loadUkkikki","Thread is running");
+                noticeData.clear();//클리어
                 try {
                     Document document = WebRequestBuilder.create()
                             .url(url)
@@ -153,23 +164,22 @@ public class MainActivity extends AppCompatActivity{
                             .useCookie(true)
                             .build();//Jsoup.connect(url).get();
                     Elements listArticle = document.select("li[class=board_box]");
-                    noticeData.clear();//클리어
-                    if(mAdapter!=null){
-                        mAdapter.notifyDataSetChanged(); // 안드로이드 버그 데이터셋 바뀜 명시
-                    }
+//                    if(mAdapter!=null){
+//                        mAdapter.notifyDataSetChanged(); // 안드로이드 버그 데이터셋 바뀜 명시
+//                    }
                     for(Element article : listArticle){
-                        final String title, author, time;
+                        final String title, author, time,num;
                         Element listContent = article.selectFirst("strong[class=tit]");
                         Log.d("우끼ㅣ끼끼ㅣ끼끼",listContent.text());
                         title = listContent.text();
                         author = article.selectFirst("span[class=ellip]").text();
                         time = article.selectFirst("span[class=time]").text();
-//                        noticeData.add(new ArticleInfo("num", "type", title, "file", author, time, "views"));
+                        num = article.selectFirst("span[class=no]").text();
+//                        noticeData.add(new ArticleInfo("num", num, title, "file", author, time, "views"));
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-//                                noticeData.clear();//클리어를 여기서 하면 안되나? 위에 onCreate함수의 lsitener에 넣어볼까?
-                                mAdapter.notifyDataSetChanged();
+//                                mAdapter.notifyDataSetChanged();
                                 noticeData.add(new ArticleInfo("num", "type", title, "file", author, time, "views"));
                             }
                         });

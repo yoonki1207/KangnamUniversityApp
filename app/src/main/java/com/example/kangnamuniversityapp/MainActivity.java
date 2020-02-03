@@ -2,6 +2,8 @@ package com.example.kangnamuniversityapp;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         Log.d("click",position+"");
+                        String title, href, views;
+                        Intent intent = new Intent(getApplicationContext(),NoticeViewActivity.class);
+                        ArticleInfo article = noticeData.get(position);
+                        intent.putExtra("article", article);
+                        startActivity(intent);
                     }
                 }
         );

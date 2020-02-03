@@ -1,6 +1,8 @@
 package com.example.kangnamuniversityapp;
 
-public class ArticleInfo {
+import java.io.Serializable;
+
+public class ArticleInfo implements Serializable {
     private String number, type, title, file, author, time, views, href;
     public ArticleInfo(){};
     public ArticleInfo(String number, String type, String title, String file, String author, String time, String views){

@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity{
             public void onRefresh() {//새로고침 하면
 
                 loadUkkikki(url2);
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);//이거때문에 그런가 laodUkkikki를 다 확인하고 해야하나
             }
         });
 

@@ -1,7 +1,8 @@
 package com.example.kangnamuniversityapp;
 
 public class ArticleInfo {
-    private String number, type, title, file, author, time, views;
+    private String number, type, title, file, author, time, views, href;
+    public ArticleInfo(){};
     public ArticleInfo(String number, String type, String title, String file, String author, String time, String views){
         this.setNumber(number).setType(type).setTitle(title).setFile(file).setAuthor(author).setTime(time).setViews(views);
     }
@@ -33,6 +34,10 @@ public class ArticleInfo {
         this.views = views;
         return this;
     }
+    public ArticleInfo setHref(String href) {
+        this.href = href;
+        return this;
+    }
 
     public String getNumber(){
         return this.number;
@@ -54,5 +59,8 @@ public class ArticleInfo {
     }
     public String getViews(){
         return this.views;
+    }
+    public String getHref() {
+        return href;
     }
 }

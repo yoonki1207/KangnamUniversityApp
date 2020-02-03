@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,18 +48,12 @@ public class NoticeListAdaptor extends RecyclerView.Adapter<NoticeListAdaptor.My
 
     @Override  //  항목을 설정set 하는 곳.
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
-//        View v = mLayoutInflater.inflate(R.layout.notice_content_simple, null);
-//        TextView titleView = (TextView)v.findViewById(R.id.textViewTitle);
-//        TextView timeView = (TextView)v.findViewById(R.id.textViewTime);
-//        TextView typeView = (TextView)v.findViewById(R.id.textViewType);
-//
-//        titleView.setText(articles.get(position).getTitle());
-//        timeView.setText(articles.get(position).getTime());
-//        typeView.setText(articles.get(position).getType());
-//        ((TextView)myViewHolder.view.findViewById(R.id.textViewTitle)).setText(articles.get(position).getTitle());
-//        ((TextView)myViewHolder.view.findViewById(R.id.textViewTime)).setText(articles.get(position).getTime());
-//        ((TextView)myViewHolder.view.findViewById(R.id.textViewType)).setText(articles.get(position).getType());
         ArticleInfo article = articles.get(position);
+        if("필독".equals(article.getNumber())){
+            myViewHolder.titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);//20sp, 15sp
+        }else{
+            myViewHolder.titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);//20sp, 15sp
+        }
         myViewHolder.titleView.setText(article.getTitle());
         myViewHolder.timeView.setText(article.getTime());
         myViewHolder.typeView.setText(article.getType());
@@ -70,29 +65,4 @@ public class NoticeListAdaptor extends RecyclerView.Adapter<NoticeListAdaptor.My
         return articles.size();
     }
 
-//    @Override
-//    public int getCount(){
-//        return articles.size();
-//    }
-//    @Override
-//    public ArticleInfo getItem(int position) {
-//        return articles.get(position);
-//    }
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        View view = mLayoutInflater.inflate(R.layout.notice_content_simple, null);
-//
-//        TextView titleView = (TextView)view.findViewById(R.id.textViewTitle);
-//        TextView timeView = (TextView)view.findViewById(R.id.textViewTime);
-//        TextView typeView = (TextView)view.findViewById(R.id.textViewType);
-//
-//        titleView.setText(articles.get(position).getTitle());
-//        timeView.setText(articles.get(position).getTime());
-//        typeView.setText(articles.get(position).getType());
-//        return view;
-//    }
 }

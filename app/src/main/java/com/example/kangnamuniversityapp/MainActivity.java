@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity{
 
                         noticeDataTmp.add(new ArticleInfo(num, type, title, file, author, time, views));
                         //널오류났었음^
-                        Log.d("num : ", num);
+                        Log.d("num : ", "["+num+"]");
                         Log.d("type : ", type);
                         Log.d("title : ", title);
                         Log.d("author : ", author);
@@ -80,6 +80,14 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        // do it
+                    }
+                }
+        );
         noticeArticleParsingThread.start();
 
         try {

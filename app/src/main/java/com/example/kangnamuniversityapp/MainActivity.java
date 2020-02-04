@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                         hrefTmp = listContent.get(2).selectFirst("a").attr("data-params");
                         String tmp = "https://web.kangnam.ac.kr/menu/board/info/f19069e6134f8f8aa7f689a4a675e66f.do?";
                         try{
-                            String text = "{\"scrtWrtiYn\":false,\"encMenuSeq\":\"c5dc4b1d7b4dd402e5e6a7a8471eb55c\",\"encMenuBoardSeq\":\"1b07d36e152d4650bd83d2d2f8dc50c5\"}";
+                            String text = hrefTmp;
                             Pattern ptn = Pattern.compile("([a-z]|[A-Z]|[0-9])+");
                             Matcher matcher = ptn.matcher(text);
                             int i=0;

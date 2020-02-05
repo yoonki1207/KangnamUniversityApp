@@ -1,5 +1,9 @@
 package com.example.kangnamuniversityapp;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +12,10 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,7 +35,12 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    private BottomNavigationView bottomNavigationView;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction transaction;
+    private HomeFragment homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.notice);
         final String url = "https://web.kangnam.ac.kr/menu/f19069e6134f8f8aa7f689a4a675e66f.do";
 //        final String url2 = "https://m.cafe.naver.com/ArticleListAjax.nhn?search.clubid=27842958&search.menuid=1&search.page=1";
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         swipeRefreshLayout = findViewById(R.id.notice_swipe_refresh_layout);
         loadNoticeArticle(url);
@@ -52,13 +66,17 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new NoticeListAdaptor(this, noticeData);
         recyclerView.setAdapter(mAdapter);
 
+        fragmentManager = getSupportFragmentManager();
+        homeFragment = new HomeFragment();
+        transaction.replace(R.id.frame_layout, homeFragment).commitNowAllowingStateLoss();
+
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener( // notice에 아이템 클릭되면
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        Log.d("click",position+"");
+                        Log.d("click", position + "");
                         String title, href, views;
-                        Intent intent = new Intent(getApplicationContext(),NoticeViewActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), NoticeViewActivity.class);
                         ArticleInfo article = noticeData.get(position);
                         intent.putExtra("article", article);
                         startActivity(intent);
@@ -66,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);//하단 네비게이션 선택 리스너
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//새로고침 listener
             @Override
             public void onRefresh() {//새로고침 하면
@@ -74,8 +92,9 @@ public class MainActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);//이거때문에 그런가 laodUkkikki를 다 확인하고 해야하나
             }
         });
-    }
 
+
+    }
     private void loadNoticeArticle(final String url) {
         new Thread(new Runnable() {
             @Override
@@ -127,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                                 i++;
                             }
                         } catch(Exception e) {
+
                         }
                         final String href = tmp;
                         Log.d("HREF",href);
@@ -151,7 +171,27 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
     } //
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.navigation_notice:
+                            //openFragment(HomeFragment.newInstance("", ""));
+                            Log.d("NAVIGATION","HOME");
+                            return true;
+                        case R.id.navigation_major_notice:
+                            //openFragment(MajorFragment.newInstance("", ""));
+                            Log.d("NAVIGATION","MAJOR");
+                            return true;
+                        case R.id.navigation_professor_information:
+                            //openFragment(NotificationFragment.newInstance("", ""));
+                            Log.d("NAVIGATION","PROFESSOR");
+                            return true;
+                    }
+                    return false;
+                }
 
+            };
     private void loadUkkikki(final String url) {
         new Thread(new Runnable() {
             @Override

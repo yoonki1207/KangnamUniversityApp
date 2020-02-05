@@ -16,7 +16,7 @@ public class NoticeViewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         ArticleInfo articleInfo = (ArticleInfo) intent.getSerializableExtra("article");
-//        noticeWebView.loadUrl(articleInfo.getHref());
-        noticeWebView.loadUrl("file:///android_asset/www/index.html");
+        noticeWebView.loadUrl(articleInfo.getHref());
+        //noticeWebView.loadUrl("file:///android_asset/www/index.html");
     }
 }

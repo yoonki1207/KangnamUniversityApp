@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="75sp"
     android:paddingStart="16dp"
-    android:background="?android:attr/selectableItemBackground"
+    android:background="?attr/selectableItemBackground"
     android:paddingTop="8dp"
     android:paddingEnd="16dp"
     tools:context=".MainActivity">
@@ -45,7 +45,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#3fff"
+        android:background="#33FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

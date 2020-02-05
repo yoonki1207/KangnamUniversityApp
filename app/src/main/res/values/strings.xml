@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">KangnamUniversityApp</string>
     <string name="sample_title">글제목 어쩌구저쩌구</string>
+    <string name="sample_time">2000/12/07</string>
+    <string name="sample_type">타입</string>
+    <string name="sample_views">999</string>
+    <string name="sample_num">721</string>
+    <string name="sample_file">첨부 파일</string>
 </resources>

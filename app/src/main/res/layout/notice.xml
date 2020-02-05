@@ -13,31 +13,7 @@
         app:layout_constraintBottom_toTopOf="@id/button_panel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_layout_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/notice_swipe_refresh_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/notice_article_recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="vertical" />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

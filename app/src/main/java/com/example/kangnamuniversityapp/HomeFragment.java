@@ -138,16 +138,21 @@ public class HomeFragment extends Fragment {
                         newArticle.setNumber(num).setType(type).setTitle(title).setAuthor(author).setTime(time).setFile(file).setViews(views).setHref(href);
                         list.add(newArticle);
                     }
+                    //안하면 NullPointerException나더라. 왜그런지는 잘 모르겠지만 아마 getActivicty()가 null을 참조하고있지 않았을까...
+                    try{
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                noticeData.clear();
+                                mAdapter.notifyDataSetChanged();
+                                noticeData.addAll(list);
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            noticeData.clear();
-                            mAdapter.notifyDataSetChanged();
-                            noticeData.addAll(list);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
+                    }catch (NullPointerException e){
+                        Log.d("널사랑해","사실아냐");
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

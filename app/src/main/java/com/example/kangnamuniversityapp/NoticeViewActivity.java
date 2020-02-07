@@ -17,6 +17,7 @@ import java.io.IOException;
 
 public class NoticeViewActivity extends AppCompatActivity {
     WebView noticeWebView;
+    String sortedHtml;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,12 +25,15 @@ public class NoticeViewActivity extends AppCompatActivity {
         //표시할 웹뷰 설정
         noticeWebView = findViewById(R.id.notice_web_view);
         //Intent로 데이터 가져오기
+
         Intent intent = getIntent();
         ArticleInfo articleInfo = (ArticleInfo) intent.getSerializableExtra("article");
 
         final String url = articleInfo.getHref();
-        noticeWebView.loadUrl(articleInfo.getHref());
+        loadSortedHtml(url);
+//        noticeWebView.loadUrl(articleInfo.getHref());
 
+        //assets 폴더의 파일은 읽기 전용
         //noticeWebView.loadUrl("file:///android_asset/www/index.html");
         /*
         https://web.kangnam.ac.kr/common/plugin/syworks.design.library/syworks.design.base.syworks.min.css
@@ -45,6 +49,10 @@ public class NoticeViewActivity extends AppCompatActivity {
         확대 기능 적용
         우클릭 기능 적용
          */
+
+
+    }
+    public void loadSortedHtml(final String url){
         new Thread(new Runnable() {
 
             @Override
@@ -61,20 +69,26 @@ public class NoticeViewActivity extends AppCompatActivity {
                     Elements elements = document.select("div[class=tbody]");Log.d("HTML","0");
                     Elements elements2 = elements.select("ul");Log.d("HTML","1");
                     Element element = elements2.get(1);Log.d("HTML","2");
-                    Element element2 = element.selectFirst("div[class=inner_txt]");Log.d("HTML","3");
-
-                    html = element2.html();Log.d("HTML","4");
-                    boolean valid = Jsoup.isValid(html, Whitelist.basic());
-                    if(valid){
-                        Log.d("HTML","valid.");
-                    }else{
-                        Log.d("HTML",html);
-                    }
+                    Element element2 = element.selectFirst("div");Log.d("HTML","3");
+//                    Log.d("HTML",element2.html());
+                    html = element2.html();
+                    sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head></head><body>"+html+"</body></html>";
+//                    sortedHtml.replace("style=\"display: none;\"","");
+                    Log.d("HTML",sortedHtml);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            noticeWebView.getSettings().setBuiltInZoomControls(true);//줌 컨트롤 UI
+                            noticeWebView.getSettings().setSupportZoom(true);//줌 가능 기능 (두 손가락을 이용)
+                            noticeWebView.loadData(sortedHtml,"text/html","UFT-8");
+//                            noticeWebView.loadUrl(sortedHtml);
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
-
     }
 }
+

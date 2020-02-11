@@ -1,16 +1,20 @@
 package com.example.kangnamuniversityapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,21 +29,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HomeFragment extends Fragment {
-
+    private OnFragmentInteraction onFragmentInteraction;
     ArrayList<ArticleInfo> noticeData = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Toolbar toolbar;
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteraction) {
+            onFragmentInteraction = (OnFragmentInteraction) context;
+        }else{
+            Log.d("인터페이스 미구현","인터페이스 미구현");
+        }
+    }
 
     @Nullable
+    @Override
+    public void onStart() {
+        Log.d("FRAGMENT","onStart() called");
+        super.onStart();
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final String url = "https://web.kangnam.ac.kr/menu/f19069e6134f8f8aa7f689a4a675e66f.do";
         //group (container) 뷰는 부모 뷰라고 이해하면 될듯. 특정 틀에 맞춰짐
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        swipeRefreshLayout = rootView.findViewById(R.id.notice_swipe_refresh_layout);
+        swipeRefreshLayout = rootView.findViewById(R.id.notice_swipe_refresh_layout_home);
 
         //리사이클러 뷰 설정
         recyclerView = rootView.findViewById(R.id.notice_article_recyclerView);
@@ -51,37 +69,40 @@ public class HomeFragment extends Fragment {
         mAdapter = new NoticeListAdaptor(getContext(), noticeData);
         recyclerView.setAdapter(mAdapter);
 
+        if(getArguments()!=null){
+            ArrayList<ArticleInfo> articleInfos = getArguments().getParcelableArrayList("articles");
+            noticeData = articleInfos;
+            mAdapter.notifyDataSetChanged();
+        }else{
+            loadNoticeArticle(url);
+        }
 
-        loadNoticeArticle(url);
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener( // notice에 아이템 클릭되면
-                new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        Log.d("click", position + "");
-                        String title, href, views;
-                        Intent intent = new Intent(getActivity(), NoticeViewActivity.class);
-                        ArticleInfo article = noticeData.get(position);
-                        intent.putExtra("article", article);
-                        startActivity(intent);
-                    }
-                }
-        );
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//새로고침 listener
             @Override
             public void onRefresh() {//새로고침 하면
-                loadNoticeArticle(url);
-                swipeRefreshLayout.setRefreshing(false);//이거때문에 그런가 laodUkkikki를 다 확인하고 해야하나
+                loadNoticeArticleList(url);
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         return rootView;
     }
-
     private void loadNoticeArticle(final String url) {
         //글 불러오기
+        if(noticeData.size()==0){
+            loadNoticeArticleList(url);
+        }else{
+            mAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    private void loadNoticeArticleList(final String url) {
         new Thread(new Runnable() {
             @Override
             public void run() {
+
                 try {
                     Document document = WebRequestBuilder.create()
                             .url(url)
@@ -91,7 +112,7 @@ public class HomeFragment extends Fragment {
                             .build();//Jsoup.connect(url).get();
 
                     Elements listArticle = document.selectFirst("div[class=tbody]").select("ul");// html tag 전부 찾아서 Elments로 만듦.
-                    Log.e("Dsds", "count: " + listArticle.size());
+//                    Log.e("Dsds", "count: " + listArticle.size());
                     final ArrayList<ArticleInfo> list = new ArrayList<>();
                     for (Element article : listArticle) {
                         ArticleInfo newArticle = new ArticleInfo();
@@ -133,7 +154,6 @@ public class HomeFragment extends Fragment {
 
                         }
                         final String href = tmp;
-                        Log.d("HREF",href);
 
                         newArticle.setNumber(num).setType(type).setTitle(title).setAuthor(author).setTime(time).setFile(file).setViews(views).setHref(href);
                         list.add(newArticle);
@@ -149,16 +169,35 @@ public class HomeFragment extends Fragment {
                                 mAdapter.notifyDataSetChanged();
                             }
                         });
-
                     }catch (NullPointerException e){
-                        Log.d("널사랑해","사실아냐");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-
             }
         }).start();
+
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener( // notice에 아이템 클릭되면
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                        String title, href, views;
+                        ArticleInfo article = noticeData.get(position);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("article",article);
+                        bundle.putParcelableArrayList("articles", (ArrayList<? extends Parcelable>) noticeData);
+                        setArguments(bundle);
+                        Log.d("ITEM","아이템이 클릭됨.");
+                        onFragmentInteraction.hideFragment();
+                    }
+                }
+        );
+    }
+
 }

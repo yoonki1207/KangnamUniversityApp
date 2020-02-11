@@ -3,6 +3,7 @@
     package="com.example.kangnamuniversityapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
 <!--        <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />-->
-        <activity android:name=".NoticeViewActivity"
+        <activity android:name=".NoticeViewFragment"
             android:configChanges="orientation|keyboardHidden|screenSize"></activity>
         <activity android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">

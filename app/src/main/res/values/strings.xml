@@ -6,4 +6,10 @@
     <string name="sample_views">999</string>
     <string name="sample_num">721</string>
     <string name="sample_file">첨부 파일</string>
+    <string name="developer_email">피드백 이메일 : yoonki1207@gmail.com</string>
+    <string name="app_version">1.0.0 beta</string>
+    <string name="fragment_setting_alarm_on_off">알람</string>
+    <string name="channel_name">Channel name</string>
+    <string name="channel_description">Channel Description</string>
+    <string name="msg_token_fmt">msg token fmt</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.kangnamuniversityapp;
+package com.tistory.hyomyo.kangnamuniversityapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;

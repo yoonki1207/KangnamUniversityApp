@@ -1,7 +1,9 @@
-package com.example.kangnamuniversityapp;
+package com.tistory.hyomyo.kangnamuniversityapp;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+
+import com.tistory.hyomyo.kangnamuniversityapp.R;
 
 /*
   Source: http://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/

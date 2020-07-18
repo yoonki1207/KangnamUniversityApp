@@ -1,7 +1,6 @@
-package com.example.kangnamuniversityapp;
+package com.tistory.hyomyo.kangnamuniversityapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -13,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.tistory.hyomyo.kangnamuniversityapp.R;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,14 +27,16 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
     private OnFragmentInteraction onFragmentInteraction;
     ArrayList<ArticleInfo> noticeData = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private EndlessRecyclerViewScrollListener scrollListener;
     private Toolbar toolbar;
+    private String globalUrl = "https://web.kangnam.ac.kr/menu/f19069e6134f8f8aa7f689a4a675e66f.do";
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
@@ -52,53 +53,72 @@ public class HomeFragment extends Fragment {
         Log.d("FRAGMENT","onStart() called");
         super.onStart();
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final String url = "https://web.kangnam.ac.kr/menu/f19069e6134f8f8aa7f689a4a675e66f.do";
-        //group (container) 뷰는 부모 뷰라고 이해하면 될듯. 특정 틀에 맞춰짐
+        // group (container) 뷰는 부모 뷰라고 이해하면 될듯. 특정 틀에 맞춰짐
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         swipeRefreshLayout = rootView.findViewById(R.id.notice_swipe_refresh_layout_home);
 
-        //리사이클러 뷰 설정
+        // 리사이클러 뷰 설정
         recyclerView = rootView.findViewById(R.id.notice_article_recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        //어댑터 설정
+        // 어댑터 설정
         mAdapter = new NoticeListAdaptor(getContext(), noticeData);
         recyclerView.setAdapter(mAdapter);
+
+        // Linear 레이아웃 메니저
+        scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                loadNextDataFromApi(page);
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
 
         if(getArguments()!=null){
             ArrayList<ArticleInfo> articleInfos = getArguments().getParcelableArrayList("articles");
             noticeData = articleInfos;
             mAdapter.notifyDataSetChanged();
         }else{
-            loadNoticeArticle(url);
+            loadNoticeArticle(globalUrl);
         }
 
-
+        // 새로고침 하면 (scroll up = 아래로 당기기)
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//새로고침 listener
             @Override
-            public void onRefresh() {//새로고침 하면
-                loadNoticeArticleList(url);
+            public void onRefresh() {
+                noticeData.clear();
+                mAdapter.notifyDataSetChanged();
+                loadNoticeArticleList(globalUrl, 1);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         return rootView;
     }
+
     private void loadNoticeArticle(final String url) {
         //글 불러오기
         if(noticeData.size()==0){
-            loadNoticeArticleList(url);
+            loadNoticeArticleList(url, 1);
         }else{
             mAdapter.notifyDataSetChanged();
         }
-
     }
 
-    private void loadNoticeArticleList(final String url) {
+//    private void loadNoticeArticleList(final String url, int page){
+//        String args = "?paginationInfo.currentPageNo="+page+"&searchMenuSeq=0&searchType=&searchValue=";
+//        loadNoticeArticleList(url+args);
+//        // https://web.kangnam.ac.kr/menu/f19069e6134f8f8aa7f689a4a675e66f.do?paginationInfo.currentPageNo=1&searchMenuSeq=0&searchType=&searchValue=
+//        // https://web.kangnam.ac.kr/menu/f19069e6134f8f8aa7f689a4a675e66f.do
+//    }
+
+    private void loadNoticeArticleList(final String _url, final int page) {      //강남대 메인 공지사항 로딩하는 쓰레드
+        final String url = _url+"?paginationInfo.currentPageNo="+page+"&searchMenuSeq=0&searchType=&searchValue=";
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -120,6 +140,10 @@ public class HomeFragment extends Fragment {
                         Elements listContent = article.select("li");
 
                         num = listContent.get(0).text();
+                        if(page!=1 && num.equals("필독")){
+                            Log.d("PASS", "필독 PASS"+page);
+                            continue;
+                        }
                         type = listContent.get(1).text();
                         title = listContent.get(2).text();
                         file = listContent.get(3).text();
@@ -156,6 +180,7 @@ public class HomeFragment extends Fragment {
                         final String href = tmp;
 
                         newArticle.setNumber(num).setType(type).setTitle(title).setAuthor(author).setTime(time).setFile(file).setViews(views).setHref(href);
+                        //Log.d("Href_",href);
                         list.add(newArticle);
                     }
                     //안하면 NullPointerException나더라. 왜그런지는 잘 모르겠지만 아마 getActivicty()가 null을 참조하고있지 않았을까...
@@ -163,8 +188,8 @@ public class HomeFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                noticeData.clear();
-                                mAdapter.notifyDataSetChanged();
+                                //noticeData.clear();
+                                //mAdapter.notifyDataSetChanged();
                                 noticeData.addAll(list);
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -183,7 +208,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener( // notice에 아이템 클릭되면
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener( // notice에 아이템 클릭되면 callback. 웹뷰 띄우기
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -200,4 +225,7 @@ public class HomeFragment extends Fragment {
         );
     }
 
+    public void loadNextDataFromApi(int offset){
+        loadNoticeArticleList(globalUrl, offset+1);
+    }
 }

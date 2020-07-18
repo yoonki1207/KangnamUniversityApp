@@ -1,4 +1,4 @@
-package com.example.kangnamuniversityapp;
+package com.tistory.hyomyo.kangnamuniversityapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,19 +16,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.DownloadListener;
-import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.widget.Toast;
+
+import com.tistory.hyomyo.kangnamuniversityapp.R;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
 
 public class NoticeViewFragment extends Fragment {
     private WebView noticeWebView;
@@ -41,19 +40,15 @@ public class NoticeViewFragment extends Fragment {
         noticeWebView = rootView.findViewById(R.id.notice_web_view);
         Bundle bundle = getArguments();
         if(bundle!=null){
-            Log.d("번들","번들번들");
             article = (ArticleInfo) getArguments().getSerializable("article");
             try{
                 url = article.getHref();
                 final String urlArg = url;
                 loadSortedHtml(urlArg);
-                Log.d("로드","완료");
             }catch(NullPointerException e){
-                Log.d("로드","실패");
+
             }
-
-
-        }Log.d("로드","후");
+        }
 
         return rootView;
     }
@@ -61,7 +56,8 @@ public class NoticeViewFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(noticeWebView!=null){
+        // 파일 다운로드 리스너 구현
+        if(noticeWebView!=null){ // 파일 다운로드 리스너 구현
             noticeWebView.setDownloadListener(new DownloadListener() {
                 //<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
                 //23이상일 경우 아래 코드로 해결
@@ -108,7 +104,7 @@ public class NoticeViewFragment extends Fragment {
         }
     }
 
-    public void loadSortedHtml(final String url){
+    public void loadSortedHtml(final String url){ // 추출된 html로 뷰 띄우는 쓰레드
         new Thread(new Runnable() {
 
             @Override
@@ -125,11 +121,10 @@ public class NoticeViewFragment extends Fragment {
                     Elements elements2 = elements.select("ul");
                     Element element = elements2.get(1);
                     Element element2 = element.selectFirst("div");
-//                    Log.d("HTML",element2.html());
+                    element2 = element2.parent();
                     html = element2.html();
 //                    sortedHtml.replace("style=\"display: none;\"","");
                     sortedHtml = getSortedHtml(html, document);
-                    Log.d("HTML",sortedHtml);
                     try{
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -151,7 +146,7 @@ public class NoticeViewFragment extends Fragment {
         }).start();
     }
 
-    private String getSortedHtml(String html, Document document) {
+    private String getSortedHtml(String html, Document document) { // 정제된 html얻기
         String sortedHtml;
         if(article.hasFile()){
             Elements elements = document.select("div[class=tbody]");
@@ -168,8 +163,10 @@ public class NoticeViewFragment extends Fragment {
             //link 들어갈 시 첨부파일 다운받는 기능
             sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head></head><body>"+html+element.html()+"</body></html>";
             sortedHtml = sortedHtml.replace("href=\"/","href=\"https://web.kangnam.ac.kr/");
+            sortedHtml = sortedHtml.replace("src=\"/","src=\"https://web.kangnam.ac.kr/");
         }else{
             sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head></head><body>"+html+"</body></html>";
+            sortedHtml = sortedHtml.replace("src=\"/","src=\"https://web.kangnam.ac.kr/");
         }
         return sortedHtml;
     }

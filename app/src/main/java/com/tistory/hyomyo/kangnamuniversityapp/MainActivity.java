@@ -1,9 +1,6 @@
-package com.example.kangnamuniversityapp;
+package com.tistory.hyomyo.kangnamuniversityapp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +10,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 /*
@@ -39,20 +42,27 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private HomeFragment homeFragment;
-    private MajorNoticeFragment majorNoticeFragment;
+    private CalendarFragment calendarFragment;
     private NoticeViewFragment noticeViewFragment;
+    private SettingFragment settingFragment;
+
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final String url = "https://web.kangnam.ac.kr/menu/f19069e6134f8f8aa7f689a4a675e66f.do";
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
 
         fragmentManager = getSupportFragmentManager();
 
         homeFragment = new HomeFragment();
-        majorNoticeFragment = new MajorNoticeFragment();
+        calendarFragment = new CalendarFragment();
         noticeViewFragment = new NoticeViewFragment();
+        settingFragment = new SettingFragment();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
 //        actionBar.setDisplayShowTitleEnabled(false);
@@ -62,6 +72,25 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         transaction.replace(R.id.frame_layout, homeFragment).commitAllowingStateLoss();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);//하단 네비게이션 선택 리스너
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                final String TAG = "Firebase TAG";
+                @Override
+                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+
+                    // Log and toast
+                    databaseReference.child("token").child("id").push().setValue(token);
+                }
+            });
+        //
     }
     @Override
     public void onBackPressed(){
@@ -91,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, homeFragment).commitAllowingStateLoss();
         }
     }
+
+    // 바텀 네비게이션 셀렉티드 리스너
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -103,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                             Log.d("NAVIGATION", "HOME");
                             return true;
                         case R.id.navigation_major_notice:
-                            transaction.replace(R.id.frame_layout, majorNoticeFragment).commitAllowingStateLoss();
+                            transaction.replace(R.id.frame_layout, calendarFragment).commitAllowingStateLoss();
                             Log.d("NAVIGATION", "MAJOR");
                             return true;
                         case R.id.navigation_professor_information:
@@ -111,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                             Log.d("NAVIGATION", "PROFESSOR");
                             return true;
                         case R.id.navigation_notification:
-
+                            transaction.replace(R.id.frame_layout, settingFragment).commitAllowingStateLoss();
                             return true;
                     }
                     return false;
@@ -119,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             };
 
     @Override
-    public void hideFragment() {
+    public void hideFragment() { // notice fragment 숨기기
         hideNoticeFragment();Log.d("프레그먼트","HIDE");
         Bundle bundle = homeFragment.getArguments();
         ArticleInfo article = (ArticleInfo) bundle.getSerializable("article");
@@ -130,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     @Override
-    public void showFragment() {
+    public void showFragment() { // notice fragment 숨기기
         showNoticeFragment();
         Log.d("프레그먼트","SHOW");
     }

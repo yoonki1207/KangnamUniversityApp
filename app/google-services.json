@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "801132463400",
+    "firebase_url": "https://knu-project-90e7a.firebaseio.com",
+    "project_id": "knu-project-90e7a",
+    "storage_bucket": "knu-project-90e7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801132463400:android:afd74c4ae9d458d0f4bc1d",
+        "android_client_info": {
+          "package_name": "com.tistory.hyomyo.kangnamuniversityapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801132463400-itg2bqcnlikk332k8rvno4ljkkg44099.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXiZmwZ2MC2zd4c1j2-wzqo5nHGbd-mOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801132463400-itg2bqcnlikk332k8rvno4ljkkg44099.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

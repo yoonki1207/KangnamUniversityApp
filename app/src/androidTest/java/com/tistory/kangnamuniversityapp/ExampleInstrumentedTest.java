@@ -1,4 +1,4 @@
-package com.example.kangnamuniversityapp;
+package com.tistory.kangnamuniversityapp;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;

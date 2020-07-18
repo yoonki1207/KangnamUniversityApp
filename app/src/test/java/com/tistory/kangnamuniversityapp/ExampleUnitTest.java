@@ -1,4 +1,4 @@
-package com.example.kangnamuniversityapp;
+package com.tistory.kangnamuniversityapp;
 
 import org.junit.Test;
 

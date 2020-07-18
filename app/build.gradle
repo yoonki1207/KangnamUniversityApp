@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.kangnamuniversityapp"
+        applicationId "com.tistory.hyomyo.kangnamuniversityapp"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion = "29.0.2"
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -26,8 +31,16 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation "com.android.support:support-compat:28.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    implementation 'com.google.firebase:firebase-database:19.3.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

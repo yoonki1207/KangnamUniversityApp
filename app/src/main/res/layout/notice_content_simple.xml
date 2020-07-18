@@ -5,11 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="75sp"
+    android:minHeight="75sp"
     android:paddingStart="16dp"
     android:background="?attr/selectableItemBackground"
     android:paddingTop="8dp"
     android:paddingEnd="16dp"
-    tools:context=".MainActivity">
+    tools:context="com.tistory.hyomyo.kangnamuniversityapp.MainActivity">
 <!--이거 NoticeListAdapter에 자세한 설정 있음-->
     <TextView
         android:id="@+id/text_view_title"
@@ -19,28 +20,48 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_view_time"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="2sp"
-        android:text="@string/sample_time"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_title" />
+        app:layout_constraintStart_toStartOf="@id/text_view_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_title">
+        <TextView
+            android:id="@+id/text_view_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2sp"
+            android:text="@string/sample_time"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <TextView
+            android:id="@+id/text_view_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2sp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="@string/sample_type"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/text_view_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
-        android:id="@+id/text_view_type"
+        android:id="@+id/text_vew_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/text_view_views"
+        app:layout_constraintTop_toBottomOf="@id/text_view_title"
+        android:paddingEnd="4sp"
         android:layout_margin="2sp"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:text="@string/sample_type"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@id/text_view_time"
-        app:layout_constraintTop_toBottomOf="@id/text_view_title" />
+        android:text=""
+        />
     <TextView
         android:id="@+id/text_view_views"
         android:layout_height="wrap_content"

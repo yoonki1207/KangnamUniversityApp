@@ -1,4 +1,4 @@
-package com.example.kangnamuniversityapp;
+package com.tistory.hyomyo.kangnamuniversityapp;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;

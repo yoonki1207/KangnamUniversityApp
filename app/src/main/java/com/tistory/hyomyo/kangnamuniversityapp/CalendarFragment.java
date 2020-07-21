@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -28,6 +27,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
+
+import static org.jsoup.Jsoup.parse;
 
 
 public class CalendarFragment extends Fragment {
@@ -44,7 +46,7 @@ public class CalendarFragment extends Fragment {
     private Button leftBtn;
     private Button rightBtn;
     private String css = ".cal_list{list-style:none;display:flex!important;flex-direction:column;align-content:space-around}.cal_month{display:block;text-align:center;font-size:20px;margin-bottom:.5em;margin-top: 1.5em}.calendal{display:flex;flex-direction:column;align-content:center}caption{display:none}table{margin:.5em 0}.SUN{color:red}.SAT{color:#00f}";
-    private final String baseUrl = "https://web.kangnam.ac.kr/menu/02be162adc07170ec7ee034097d627e9.do?";
+    private final String BASE_URL = "https://web.kangnam.ac.kr/menu/02be162adc07170ec7ee034097d627e9.do?";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,10 +97,9 @@ public class CalendarFragment extends Fragment {
                     }
                     if(nYear>=1900 && nYear<=Integer.parseInt(date[0])+20 && nYear!=Integer.parseInt(date[0])){
                         //가능
-                        date[0] = nYear+"";
+                        currentYear = date[0] = nYear+"";
                         date[1] = "01";
-
-                        loadHtml(baseUrl);
+                        loadHtml(BASE_URL);
                     }else{
                         // out of years
                     }
@@ -121,8 +122,7 @@ public class CalendarFragment extends Fragment {
             }else
                 date[1] = String.format("%02d",--n);
 
-            loadHtml(baseUrl);
-            Log.d("버튼", "left button clicked! : "+date[0]+date[1]);
+            loadHtml(BASE_URL);
         });
         rightBtn.setOnClickListener(v -> {
             int n = Integer.parseInt(date[1]);
@@ -132,21 +132,21 @@ public class CalendarFragment extends Fragment {
                 yearText.setText(date[0]);
             }else
                 date[1] = String.format("%02d",++n);
-            loadHtml(baseUrl);
-            Log.d("버튼", "right button clicked! : "+date[0]+date[1]);
+            loadHtml(BASE_URL);
         });
 
-        loadHtml(baseUrl);
+        loadHtml(BASE_URL);
         return rootView;
     }
 
     // year와 month가 적용된 올바른 url을 주면 date[]를 기반으로 데이터를 가져옴
     private void loadHtml(final String url){
         try{
-            String html;
+
             if(!mapYear.containsKey(date[0])){
                 new Thread(() -> {
                     try {
+                        // 인터넷 접속
                         final String _url =  url+"year="+date[0]+"&month="+date[1]+"&tab=1";
                         Document document = WebRequestBuilder.create()
                                 .url(_url)
@@ -160,45 +160,36 @@ public class CalendarFragment extends Fragment {
                         mapYear.put(date[0], currentYearHtml);
 
                         assert currentYearHtml != null;
-                        Document doc = Jsoup.parse(currentYearHtml);
+                        Document doc = parse(currentYearHtml);
                         String monthId = "calendar"+date[0]+date[1];
-                        Log.d("달아이디",monthId);
                         String monthHtml = getMonthHtmlById(doc, monthId);
-                        String _html;
-                        _html = getSortedHtml(monthHtml);
-                        loadData(_html);
-                    }catch (IOException e){
-
+                        loadData(getSortedHtml(monthHtml));
+                    }catch (IOException ignored){
                     }
-
                 }).start();
             }else{
-                currentYearHtml = mapYear.get(date[0]);
-                assert currentYearHtml != null;
-                Document doc = Jsoup.parse(currentYearHtml);
-                String monthId = "calendar"+date[0]+date[1];
-                Log.d("달아이디",monthId);
-                String monthHtml = getMonthHtmlById(doc, monthId);
-                html = getSortedHtml(monthHtml);
-                loadData(html);
+                new Thread(()->{
+                    currentYearHtml = mapYear.get(date[0]);
+                    assert currentYearHtml != null;
+                    Document doc = parse(currentYearHtml);
+                    String monthId = "calendar"+date[0]+date[1];
+                    loadData(getSortedHtml(getMonthHtmlById(doc, monthId)));
+                }).start();
             }
-        }catch(Exception e){
+        }catch(Exception ignored){
 
         }
-
     }
 
     private void loadData(String html){
         try{
-            getActivity().runOnUiThread(() -> {
-                Log.d("리로드","한다");
+            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
                 calenderView.getSettings().setBuiltInZoomControls(true);//줌 가능
-//                            noticeWebView.getSettings().setSupportZoom(true);//줌 UI
+        //                            noticeWebView.getSettings().setSupportZoom(true);//줌 UI
+                //calenderView.clearFormData();
                 calenderView.loadData(html,"text/html","UFT-8");
-                calenderView.reload();
-            });
-        }catch(NullPointerException e) {
-
+                });
+            }catch(NullPointerException ignored) {
         }
     }
 
@@ -208,7 +199,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private String getMonthHtmlById(Document doc, String id){
-        Element element = doc.getElementById(id);
+        Element element = doc.getElementById(id.trim());
         return element.html();
     }
 

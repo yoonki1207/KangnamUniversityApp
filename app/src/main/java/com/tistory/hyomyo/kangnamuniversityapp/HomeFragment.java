@@ -24,6 +24,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +48,6 @@ public class HomeFragment extends Fragment{
         }
     }
 
-    @Nullable
     @Override
     public void onStart() {
         Log.d("FRAGMENT","onStart() called");
@@ -152,32 +152,32 @@ public class HomeFragment extends Fragment{
                         views =listContent.get(6).text();
                         hrefTmp = listContent.get(2).selectFirst("a").attr("data-params");
                         //this.url이랑 조금 다름
-                        String tmp = "https://web.kangnam.ac.kr/menu/board/info/f19069e6134f8f8aa7f689a4a675e66f.do?";
+                        StringBuilder tmp = new StringBuilder("https://web.kangnam.ac.kr/menu/board/info/f19069e6134f8f8aa7f689a4a675e66f.do?");
                         try{
-                            String text = hrefTmp;
                             Pattern ptn = Pattern.compile("([a-z]|[A-Z]|[0-9])+");
-                            Matcher matcher = ptn.matcher(text);
+                            Matcher matcher;
+                            matcher = ptn.matcher(hrefTmp);
                             int i=0;
                             while(matcher.find()){
                                 if(i==0){
-                                    tmp+=matcher.group()+"=";
+                                    tmp.append(matcher.group()).append("=");
                                 }else if(i==1){
-                                    tmp+=matcher.group()+"&";
+                                    tmp.append(matcher.group()).append("&");
                                 }else if(i==2){
-                                    tmp+=matcher.group()+"=";
+                                    tmp.append(matcher.group()).append("=");
                                 }else if(i==3){
-                                    tmp+=matcher.group()+"&";
+                                    tmp.append(matcher.group()).append("&");
                                 }else if(i==4){
-                                    tmp+=matcher.group()+"=";
+                                    tmp.append(matcher.group()).append("=");
                                 }else{
-                                    tmp+=matcher.group();
+                                    tmp.append(matcher.group());
                                 }
                                 i++;
                             }
-                        } catch(Exception e) {
+                        } catch(Exception ignored) {
 
                         }
-                        final String href = tmp;
+                        final String href = tmp.toString();
 
                         newArticle.setNumber(num).setType(type).setTitle(title).setAuthor(author).setTime(time).setFile(file).setViews(views).setHref(href);
                         //Log.d("Href_",href);
@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment{
                     }
                     //안하면 NullPointerException나더라. 왜그런지는 잘 모르겠지만 아마 getActivicty()가 null을 참조하고있지 않았을까...
                     try{
-                        getActivity().runOnUiThread(new Runnable() {
+                        Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 //noticeData.clear();
@@ -194,7 +194,7 @@ public class HomeFragment extends Fragment{
                                 mAdapter.notifyDataSetChanged();
                             }
                         });
-                    }catch (NullPointerException e){
+                    }catch (NullPointerException ignored){
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -219,7 +219,7 @@ public class HomeFragment extends Fragment{
                         bundle.putParcelableArrayList("articles", (ArrayList<? extends Parcelable>) noticeData);
                         setArguments(bundle);
                         Log.d("ITEM","아이템이 클릭됨.");
-                        onFragmentInteraction.hideFragment();
+                        onFragmentInteraction.hideFragment(R.layout.fragment_home);
                     }
                 }
         );

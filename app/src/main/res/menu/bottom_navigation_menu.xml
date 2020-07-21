@@ -9,7 +9,7 @@
     <item
         android:id="@+id/navigation_major_notice"
         android:icon="@drawable/windows_2"
-        android:title="MajorNotice" />
+        android:title="Calendar" />
     <item
         android:id="@+id/navigation_professor_information"
         android:icon="@drawable/user_3"

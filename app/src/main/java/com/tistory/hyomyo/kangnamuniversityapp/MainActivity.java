@@ -42,8 +42,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private HomeFragment homeFragment;
-    private CalendarFragment calendarFragment;
     private NoticeViewFragment noticeViewFragment;
+    private CalendarFragment calendarFragment;
+    private ContactAddressFragment contactAddressFragment;
+    private ContactAddressResultFragment contactAddressResultFragment;
     private SettingFragment settingFragment;
 
     private FirebaseDatabase firebaseDatabase;
@@ -60,9 +62,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         fragmentManager = getSupportFragmentManager();
 
         homeFragment = new HomeFragment();
-        calendarFragment = new CalendarFragment();
         noticeViewFragment = new NoticeViewFragment();
+        calendarFragment = new CalendarFragment();
         settingFragment = new SettingFragment();
+        contactAddressFragment = new ContactAddressFragment();
+        contactAddressResultFragment = new ContactAddressResultFragment();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
 //        actionBar.setDisplayShowTitleEnabled(false);
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public void onBackPressed(){
         if(noticeViewFragment.isVisible()){
             getSupportFragmentManager().beginTransaction().remove(noticeViewFragment).commitAllowingStateLoss();
-            showFragment();
+            showFragment(R.layout.fragment_home);
         }else{
             super.onBackPressed();
         }
@@ -139,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                             return true;
                         case R.id.navigation_professor_information:
                             //openFragment(NotificationFragment.newInstance("", ""));
+                            transaction.replace(R.id.frame_layout, contactAddressFragment).commitAllowingStateLoss();
                             Log.d("NAVIGATION", "PROFESSOR");
                             return true;
                         case R.id.navigation_notification:
@@ -150,19 +155,38 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             };
 
     @Override
-    public void hideFragment() { // notice fragment 숨기기
-        hideNoticeFragment();Log.d("프레그먼트","HIDE");
-        Bundle bundle = homeFragment.getArguments();
-        ArticleInfo article = (ArticleInfo) bundle.getSerializable("article");
-        bundle.putSerializable("article",article);
-        noticeViewFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,noticeViewFragment).commitAllowingStateLoss();
+    public void hideFragment(int layout) { // notice fragment 숨기기
+        switch(layout){
+            case R.layout.fragment_home:
+                hideNoticeFragment(); // hide fragment
+                // get bundle (get article info data)
 
+                noticeViewFragment.setArguments(homeFragment.getArguments());
+                // replace fragment by bundle data
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, noticeViewFragment).commitAllowingStateLoss();
+                break;
+            case R.layout.fragment_contact_address:
+                // hide fragment
+                if(contactAddressFragment!=null)
+                    getSupportFragmentManager().beginTransaction().hide(contactAddressFragment).commitAllowingStateLoss();
+                assert contactAddressFragment != null;
+                contactAddressResultFragment.setArguments(contactAddressFragment.getArguments());
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, contactAddressResultFragment).commitAllowingStateLoss();
+
+                break;
+        }
     }
 
     @Override
-    public void showFragment() { // notice fragment 숨기기
-        showNoticeFragment();
-        Log.d("프레그먼트","SHOW");
+    public void showFragment(int layout) { // notice fragment 숨기기
+        switch(layout){
+            case R.layout.fragment_home:
+                showNoticeFragment();
+                Log.d("프레그먼트","SHOW");
+                break;
+            case R.layout.fragment_contact_address:
+
+                break;
+        }
     }
 }

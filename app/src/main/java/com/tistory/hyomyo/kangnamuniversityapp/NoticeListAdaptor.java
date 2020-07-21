@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,9 @@ import com.tistory.hyomyo.kangnamuniversityapp.R;
 import java.util.ArrayList;
 
 public class NoticeListAdaptor extends RecyclerView.Adapter<NoticeListAdaptor.MyViewHolder> {
-    Context mContext;
-    LayoutInflater mLayoutInflater;
+
     ArrayList<ArticleInfo> articles;
+
     // RecyclerView.ViewHolder를 상속해서 말 그래돌 뷰 홀더를 만든다.
     // 이곳에는 리스트 각 목록에 해당하는 요소들 (title, date, views 등)을 묶는다.
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -29,14 +30,12 @@ public class NoticeListAdaptor extends RecyclerView.Adapter<NoticeListAdaptor.My
             titleView = v.findViewById(R.id.text_view_title);
             timeView = v.findViewById(R.id.text_view_time);
             typeView = v.findViewById(R.id.text_view_type);
-            viewsView =v.findViewById(R.id.text_view_views);
+            viewsView = v.findViewById(R.id.text_view_views);
         }
     }
 
     public NoticeListAdaptor(Context context, ArrayList<ArticleInfo> data){
-        mContext = context;
         articles = data;
-        mLayoutInflater = LayoutInflater.from(mContext);
     }
 
     @NonNull
@@ -46,8 +45,7 @@ public class NoticeListAdaptor extends RecyclerView.Adapter<NoticeListAdaptor.My
         View v = (View) LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.notice_content_simple, viewGroup, false);
 
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     @Override  //  항목을 설정 set 하는 곳. 바인딩.  뷰 홀더와 포지션이 매개변수로 전달된다.

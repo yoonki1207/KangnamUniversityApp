@@ -34,14 +34,16 @@ public class AddressResultAdapter extends RecyclerView.Adapter<AddressResultAdap
         TextView name;
         TextView locate;
         TextView email;
-        Button callBtn;
         public MyViewHolder(@NonNull View v) {
             super(v);
             belong = v.findViewById(R.id.address_belong);
             name = v.findViewById(R.id.address_name);
             locate = v.findViewById(R.id.address_locate);
             email = v.findViewById(R.id.address_email);
-            callBtn = v.findViewById(R.id.address_call_btn);
+
+            v.setOnClickListener(v1 -> {
+
+            });
         }
     }
 
@@ -59,7 +61,7 @@ public class AddressResultAdapter extends RecyclerView.Adapter<AddressResultAdap
 
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.contact_address_content_simple, parent, false);
-
+        this.rootView = v;
         return new MyViewHolder(v);
     }
 
@@ -75,21 +77,21 @@ public class AddressResultAdapter extends RecyclerView.Adapter<AddressResultAdap
                 .replaceAll("–","")
                 .replaceAll(" ","")
                 .trim();
-        holder.callBtn.setOnClickListener(v -> {
-            try{
-                Log.d("전번",tel);
-                context.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(tel)));
-                //clipboardManager.setPrimaryClip(ClipData.newPlainText(addressInfo.getName(),tel));
-                final String _toastMsg =  "'"+addressInfo.getName()+"' : "+tel;
-                Toast.makeText(context, _toastMsg, Toast.LENGTH_SHORT).show();
-            }catch (Exception e){
-                final Snackbar snackbar = Snackbar.make(rootView, "전화를 걸 수 없습니다.", Snackbar.LENGTH_LONG);
-                snackbar.setAction("확인", v1 -> {
-                    snackbar.dismiss();
-                });
-                snackbar.show();
-            }
-        });
+//        holder.callBtn.setOnClickListener(v -> {
+//            try{
+//                Log.d("전번",tel);
+//                context.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(tel)));
+//                //clipboardManager.setPrimaryClip(ClipData.newPlainText(addressInfo.getName(),tel));
+//                final String _toastMsg =  "'"+addressInfo.getName()+"' : "+tel;
+//                Toast.makeText(context, _toastMsg, Toast.LENGTH_SHORT).show();
+//            }catch (Exception e){
+//                final Snackbar snackbar = Snackbar.make(rootView, "전화를 걸 수 없습니다.", Snackbar.LENGTH_LONG);
+//                snackbar.setAction("확인", v1 -> {
+//                    snackbar.dismiss();
+//                });
+//                snackbar.show();
+//            }
+//        });
     }
 
     @Override

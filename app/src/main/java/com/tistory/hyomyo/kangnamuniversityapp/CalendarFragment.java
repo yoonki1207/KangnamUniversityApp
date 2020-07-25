@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +53,7 @@ public class CalendarFragment extends Fragment {
         calenderView = rootView.findViewById(R.id.calender_web_view);
         progressBar = rootView.findViewById(R.id.progressBar);
         yearText = rootView.findViewById(R.id.year_text);
-        rightBtn = rootView.findViewById(R.id.clander_right);
+        rightBtn = rootView.findViewById(R.id.calender_right);
         leftBtn = rootView.findViewById(R.id.calender_left);
         calenderView.setWebViewClient(new WebViewClient(){
             @Override

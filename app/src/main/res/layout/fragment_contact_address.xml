@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-        <EditText
-            android:id="@+id/search_value"
-            android:layout_width="130sp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/search_button"></EditText>
-        <Button
-            android:id="@+id/search_button"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"></Button>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="@string/string_search_title"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:padding="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+            <EditText
+                android:id="@+id/search_value"
+                android:layout_width="230sp"
+                android:layout_height="wrap_content"
+                android:hint="@string/string_search_hint"/>
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:text="@string/string_search_btn"/>
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_search_description"
+            android:textSize="17sp"
+            android:padding="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>

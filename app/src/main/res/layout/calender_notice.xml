@@ -25,27 +25,28 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            >
-
-        </Button>
+            android:background="@color/colorWhite"
+            android:shadowColor="@color/colorBackgroundNoticeDark"
+            android:text="@string/string_calender_previous"
+            android:textColor="@color/colorBackgroundNoticeDark"/>
         <EditText
             android:id="@+id/year_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/calender_left"
-            app:layout_constraintEnd_toStartOf="@id/clander_right"
+            app:layout_constraintEnd_toStartOf="@id/calender_right"
             app:layout_constraintTop_toTopOf="parent"
-            android:inputType="phone"
-            />
+            android:inputType="phone" />
         <Button
-            android:id="@+id/clander_right"
+            android:id="@+id/calender_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            >
-
-        </Button>
+            android:background="@color/colorWhite"
+            android:shadowColor="@color/colorBackgroundNoticeDark"
+            android:text="@string/string_calender_next"
+            android:textColor="@color/colorBackgroundNoticeDark"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <include
         layout="@layout/custom_dialog"

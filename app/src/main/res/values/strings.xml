@@ -18,4 +18,14 @@
     <string name="channel_description">Channel Description</string>
     <string name="msg_token_fmt">msg token fmt</string>
     <string name="string_search_result">검색 결과</string>
+    <string name="string_copy_phone_number">전화번호 복사</string>
+    <string name="string_copy_email">이메일 복사</string>
+    <string name="string_close">닫기</string>
+    <string name="string_title_address_result">정보 복사하기</string>
+    <string name="string_search_title">교내 전화번호 검색</string>
+    <string name="string_search_btn">검색</string>
+    <string name="string_search_description">목록 짧게 터치 : 전화번호 혹은 이메일 복사하기\n목록 길게 터치 : 전화번호 다이얼 바로가기</string>
+    <string name="string_search_hint">성명/부서명을 입력해주세요</string>
+    <string name="string_calender_previous">이전 달</string>
+    <string name="string_calender_next">다음 달</string>
 </resources>

@@ -101,7 +101,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         if(noticeViewFragment.isVisible()){
             getSupportFragmentManager().beginTransaction().remove(noticeViewFragment).commitAllowingStateLoss();
             showFragment(R.layout.fragment_home);
-        }else{
+        }else if(contactAddressResultFragment.isVisible()){
+            getSupportFragmentManager().beginTransaction().remove(contactAddressResultFragment).commitAllowingStateLoss();
+            showFragment(R.layout.fragment_contact_address);
+        }
+        else{
             super.onBackPressed();
         }
     }
@@ -185,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 Log.d("프레그먼트","SHOW");
                 break;
             case R.layout.fragment_contact_address:
-
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, contactAddressFragment).commitAllowingStateLoss();
                 break;
         }
     }

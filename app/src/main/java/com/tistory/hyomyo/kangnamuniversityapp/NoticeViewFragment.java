@@ -34,6 +34,7 @@ public class NoticeViewFragment extends Fragment {
     private String sortedHtml;
     private ArticleInfo article;
     private String url;
+    private final String style = "<style type=\"text/css\">img{ max-width: 1080px;}</style>";
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_web_view_notice,container,false);
@@ -161,11 +162,11 @@ public class NoticeViewFragment extends Fragment {
 //                herfBox += "<><>";
 //            }
             //link 들어갈 시 첨부파일 다운받는 기능
-            sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head></head><body>"+html+element.html()+"</body></html>";
+            sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head>"+style+"</head><body>"+html+element.html()+"</body></html>";
             sortedHtml = sortedHtml.replace("href=\"/","href=\"https://web.kangnam.ac.kr/");
             sortedHtml = sortedHtml.replace("src=\"/","src=\"https://web.kangnam.ac.kr/");
         }else{
-            sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head></head><body>"+html+"</body></html>";
+            sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head>"+style+"</head><body>"+html+"</body></html>";
             sortedHtml = sortedHtml.replace("src=\"/","src=\"https://web.kangnam.ac.kr/");
         }
         return sortedHtml;

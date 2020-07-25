@@ -1,9 +1,9 @@
 package com.tistory.hyomyo.kangnamuniversityapp;
 
 import android.content.Context;
-import android.location.Address;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ContactAddressResultFragment extends Fragment {
 
@@ -79,6 +82,41 @@ public class ContactAddressResultFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+
         super.onViewCreated(view, savedInstanceState);
+
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener((recyclerView1, position, v) -> {
+            Intent intent = new Intent(rootContext, AddressResultPopupActivity.class);
+            AddressInfo ad = addressInfos.get(position);
+            intent.putExtra("data", ad);
+            startActivityForResult(intent, 1);
+            Toast.makeText(rootContext, ad.getName()+"님의 전화번호로 연결합니다", Toast.LENGTH_SHORT);
+        });
+
+        ItemClickSupport.addTo(recyclerView).setOnItemLongClickListener((recyclerView1, position, v) -> {
+            AddressInfo ad = addressInfos.get(position);
+            String _phoneNumber = ad.getPhoneNumber().replaceAll("-", "")
+                    .replaceAll("–","")
+                    .replaceAll(" ","")
+                    .trim();
+            if(_phoneNumber.equals("")){
+                final Snackbar snackbar = Snackbar.make(Objects.requireNonNull(this.getView()), "전화를 걸 수 없습니다.", Snackbar.LENGTH_LONG);
+                snackbar.setAction("확인", v1 -> {
+                    snackbar.dismiss();
+                });
+                snackbar.show();
+            }else{
+                Uri number = Uri.parse("tel:"+_phoneNumber);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                try{
+                    rootContext.startActivity(callIntent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            return true;
+        });
+
     }
 }

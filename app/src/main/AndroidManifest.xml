@@ -33,7 +33,10 @@
         <activity
             android:name="com.tistory.hyomyo.kangnamuniversityapp.ContactAddressResultFragment"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            tools:ignore="Instantiatable" />
+            tools:ignore="Instantiatable"/>
+        <activity android:name="com.tistory.hyomyo.kangnamuniversityapp.AddressResultPopupActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Dialog"/>
         <activity android:name="com.tistory.hyomyo.kangnamuniversityapp.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>

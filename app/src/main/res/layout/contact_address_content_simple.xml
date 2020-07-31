@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80sp"
+    android:layout_height="wrap_content"
     android:paddingTop="10dp"
     android:paddingStart="10dp"
     android:paddingEnd="10dp"
@@ -14,8 +14,8 @@
     <!--    소속  성명 전화번호 위치 이메일-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/address_first_layout"
-        android:layout_width="330dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,7 +29,8 @@
             android:text="@string/sample_belong"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="?attr/textColor">
 
         </TextView>
 
@@ -43,7 +44,8 @@
             android:text="@string/sample_name"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@id/address_belong"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="?attr/textColor"/>
 
         <TextView
             android:id="@+id/address_locate"
@@ -52,8 +54,10 @@
             android:layout_marginBottom="5dp"
             android:text="@string/sample_locate"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/address_belong" />
+            app:layout_constraintTop_toBottomOf="@id/address_name"
+            app:layout_constraintStart_toStartOf="@id/address_belong"
+            android:paddingBottom="10dp"
+            android:textColor="?attr/textColor"/>
 
         <View
             android:id="@+id/address_bar2"
@@ -61,8 +65,9 @@
             android:layout_height="20sp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginBottom="5dp"
-            android:background="#33FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="1dp"
+            android:background="?attr/metaTextColor"
+            app:layout_constraintTop_toBottomOf="@id/address_name"
             app:layout_constraintStart_toEndOf="@id/address_locate" />
 
         <TextView
@@ -73,14 +78,16 @@
             android:layout_marginBottom="5dp"
             android:text="@string/sample_email"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/address_bar2" />
+            app:layout_constraintTop_toBottomOf="@id/address_name"
+            app:layout_constraintStart_toEndOf="@id/address_bar2"
+            android:textColor="?attr/textColor"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#33FFFFFF"
+        android:background="?attr/metaTextColor"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class AddressResultPopupActivity extends Activity {
 
@@ -27,7 +28,15 @@ public class AddressResultPopupActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+
         clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+
+        String theme = (String)intent.getSerializableExtra("theme");
+        if(theme.equals("dark"))
+            setTheme(R.style.DialogDarkTheme);
+        else
+            setTheme(R.style.DialogLightTheme);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.address_result_popup);
@@ -46,22 +55,18 @@ public class AddressResultPopupActivity extends Activity {
             finish();
         });
 
-        Intent intent = getIntent();
         ad = (AddressInfo) intent.getSerializableExtra("data");
-        Log.d("정보", ad.getName());
 
         phone.setText(phone.getText()+": "+ad.getPhoneNumber());
         email.setText(email.getText()+": "+ad.getEmail());
     }
 
     public void phoneSelect(){
-        Log.d("셀렉트","폰 셀렉트 ");
         clipboardManager.setPrimaryClip(ClipData.newPlainText("PhoneNumHYOMYO", ad.getPhoneNumber()));
         Toast.makeText(this, "전화번호를 복사했습니다.", Toast.LENGTH_SHORT).show();
     }
 
     public  void emailSelect(){
-        Log.d("셀렉트","이멜 셀렉트 ");
         clipboardManager.setPrimaryClip(ClipData.newPlainText("EmailHYOMYO", ad.getEmail()));
         Toast.makeText(this, "이메일을 복사했습니다.", Toast.LENGTH_SHORT).show();
     }

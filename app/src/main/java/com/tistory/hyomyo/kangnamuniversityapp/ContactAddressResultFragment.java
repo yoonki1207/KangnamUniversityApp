@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,6 +90,12 @@ public class ContactAddressResultFragment extends Fragment {
             Intent intent = new Intent(rootContext, AddressResultPopupActivity.class);
             AddressInfo ad = addressInfos.get(position);
             intent.putExtra("data", ad);
+            String theme;
+            if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+                theme = "dark";
+            else
+                theme = "light";
+            intent.putExtra("theme",theme);
             startActivityForResult(intent, 1);
             Toast.makeText(rootContext, ad.getName()+"님의 전화번호로 연결합니다", Toast.LENGTH_SHORT);
         });

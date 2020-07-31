@@ -1,14 +1,19 @@
 package com.tistory.hyomyo.kangnamuniversityapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +24,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
+import java.util.Objects;
 /*
 https://www.flaticon.com/kr/packs/essential-set-2
 <div>아이콘 제작자 <a href="https://www.flaticon.com/kr/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/kr/" title="Flaticon">www.flaticon.com</a></div>
@@ -47,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private ContactAddressFragment contactAddressFragment;
     private ContactAddressResultFragment contactAddressResultFragment;
     private SettingFragment settingFragment;
+    private Toolbar toolbar;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -54,6 +61,14 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // setting the current theme (aftger activity restart)
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme);
+        } else {
+            setTheme(R.style.LightTheme);
+        }
+
         setContentView(R.layout.activity_main);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -67,7 +82,17 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         settingFragment = new SettingFragment();
         contactAddressFragment = new ContactAddressFragment();
         contactAddressResultFragment = new ContactAddressResultFragment();
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        // 앱바 좌측 메뉴
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
+//        getSupportActionBar().addOnMenuVisibilityListener(isVisible -> {
+//
+//        });
 
 //        actionBar.setDisplayShowTitleEnabled(false);
 
@@ -88,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     }
 
                     // Get new Instance ID token
-                    String token = task.getResult().getToken();
+                    String token = Objects.requireNonNull(task.getResult()).getToken();
 
                     // Log and toast
                     databaseReference.child("token").child("id").push().setValue(token);
@@ -96,6 +121,31 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             });
         //
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.main_appbar_top_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        int id = menuItem.getItemId();
+        switch (id){
+            case R.id.appbar_action_theme_toggle:
+                if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+
+                finish();
+                startActivity(new Intent(MainActivity.this, MainActivity.this.getClass()));
+                break;
+        }
+        return true;
+    }
+
     @Override
     public void onBackPressed(){
         if(noticeViewFragment.isVisible()){

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent">
     <item
         android:id="@+id/navigation_notice"
         android:icon="@drawable/home_1"
-        android:title="Notice" />
+        android:title="Notice"/>
     <item
         android:id="@+id/navigation_major_notice"
         android:icon="@drawable/windows_2"
-        android:title="Calendar" />
+        android:title="Calendar"/>
     <item
         android:id="@+id/navigation_professor_information"
         android:icon="@drawable/user_3"
-        android:title="Professor" />
+        android:title="Professor"/>
     <item
         android:id="@+id/navigation_notification"
         android:icon="@drawable/alarm"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/appbar_action_theme_toggle"
+        android:title="어두운/밝은 테마 변경"
+        app:showAsAction="withText"
+
+        />
+</menu>

@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -8,5 +8,44 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="LightTheme" parent="AppTheme">
+        <item name="textColor">#383838</item>
+        <item name="textColorReverse">#D5D5D5</item>
+        <item name="metaTextColor">#606060</item>
+        <item name="bgColor">#f0f0f0</item>
+        <item name="bgColorDeep">#ffffff</item>
+        <item name="lineColor">#a0a0a0</item>
+        <item name="textHintColor">#898989</item>
+        <item name="btnColor">#e0e0e0</item>
+        <item name="mainColor">@color/mainColor</item>
+        <item name="mainColorForLight">@color/mainColor</item>
+        <item name="appBarColor">@color/mainColor</item>
+    </style>
+
+    <style name="DarkTheme" parent="AppTheme">
+        <item name="textColor">#D5D5D5</item>
+        <item name="textColorReverse">#383838</item>
+        <item name="metaTextColor">#e0e0e0</item>
+        <item name="bgColor">@color/colorBackgroundNoticeDark</item>
+        <item name="bgColorDeep">#000000</item>
+        <item name="lineColor">#606060</item>
+        <item name="textHintColor">#a7a7a7</item>
+        <item name="btnColor">#505050</item>
+        <item name="mainColor">@color/colorBackgroundNoticeDark</item>
+        <item name="mainColorForLight">#D5D5D5</item>
+        <item name="appBarColor">#2D4AB5</item>
+    </style>
+
+    <style name="DialogLightTheme" parent="Theme.AppCompat.Dialog">
+        <item name="textColor">#383838</item>
+        <item name="metaTextColor">#606060</item>
+        <item name="bgColor">#f0f0f0</item>
+    </style>
+    <style name="DialogDarkTheme" parent="Theme.AppCompat.Dialog">
+        <item name="textColor">#D5D5D5</item>
+        <item name="metaTextColor">#e0e0e0</item>
+        <item name="bgColor">#505050</item>
     </style>
 </resources>

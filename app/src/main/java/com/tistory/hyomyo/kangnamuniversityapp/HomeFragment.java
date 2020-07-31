@@ -101,6 +101,26 @@ public class HomeFragment extends Fragment{
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener( // notice에 아이템 클릭되면 callback. 웹뷰 띄우기
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                        String title, href, views;
+                        ArticleInfo article = noticeData.get(position);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("article",article);
+                        bundle.putParcelableArrayList("articles", (ArrayList<? extends Parcelable>) noticeData);
+                        setArguments(bundle);
+                        Log.d("ITEM","아이템이 클릭됨.");
+                        onFragmentInteraction.hideFragment(R.layout.fragment_home);
+                    }
+                }
+        );
+    }
+
     private void loadNoticeArticle(final String url) {
         //글 불러오기
         if(noticeData.size()==0){
@@ -205,25 +225,7 @@ public class HomeFragment extends Fragment{
 
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-        super.onViewCreated(view, savedInstanceState);
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener( // notice에 아이템 클릭되면 callback. 웹뷰 띄우기
-                new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-//                        String title, href, views;
-                        ArticleInfo article = noticeData.get(position);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("article",article);
-                        bundle.putParcelableArrayList("articles", (ArrayList<? extends Parcelable>) noticeData);
-                        setArguments(bundle);
-                        Log.d("ITEM","아이템이 클릭됨.");
-                        onFragmentInteraction.hideFragment(R.layout.fragment_home);
-                    }
-                }
-        );
-    }
+
 
     public void loadNextDataFromApi(int offset){
         loadNoticeArticleList(globalUrl, offset+1);

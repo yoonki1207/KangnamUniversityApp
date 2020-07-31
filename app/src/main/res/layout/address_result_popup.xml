@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/colorBackgroundNoticeDark">
+    android:background="?attr/bgColor"
+    android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/string_title_address_result"
         android:textSize="25sp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="?attr/textColor"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -25,9 +29,9 @@
             android:text="@string/string_copy_phone_number"
             android:textSize="15sp"
             android:padding="10dp"
-            android:background="@color/colorBackgroundNoticeDark"
+            android:background="?attr/bgColor"
             android:textAlignment="textStart"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="?attr/textColor"/>
         <Button
             android:id="@+id/copy_address_email"
             android:layout_width="match_parent"
@@ -35,9 +39,10 @@
             android:text="@string/string_copy_email"
             android:textSize="15sp"
             android:padding="10dp"
-            android:background="@color/colorBackgroundNoticeDark"
+            android:background="?attr/bgColor"
             android:textAlignment="textStart"
-            android:textColor="@color/colorWhite"/>
+            android:textAllCaps="false"
+            android:textColor="?attr/textColor"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -52,10 +57,10 @@
             android:id="@+id/address_result_close"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBackgroundNoticeDark"
+            android:background="?attr/bgColor"
             android:text="@string/string_close"
             android:textSize="20sp"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="?attr/textColor"/>
     </LinearLayout>
 
 </LinearLayout>

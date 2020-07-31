@@ -19,7 +19,8 @@
             android:src="@drawable/logo_02_white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:tint="?attr/mainColorForLight"/>
 
         <TextView
             android:id="@+id/developer_email"
@@ -29,7 +30,8 @@
             android:text="@string/developer_email"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logo" />
+            app:layout_constraintTop_toBottomOf="@+id/logo"
+            android:textColor="?attr/metaTextColor"/>
 
         <TextView
             android:id="@+id/app_version"
@@ -39,7 +41,8 @@
             android:text="@string/app_version"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/developer_email" />
+            app:layout_constraintTop_toBottomOf="@+id/developer_email"
+            android:textColor="?attr/metaTextColor"/>
 
 <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
 <!--            android:layout_width="wrap_content"-->

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    tools:context="com.tistory.hyomyo.kangnamuniversityapp.MainActivity">
+    <LinearLayout
+        android:id="@+id/calendar_linear_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="vertical"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/calender_date"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:paddingLeft="4dp"
+                android:text="25"
+                android:textColor="?attr/textColor"
+                android:textSize="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+2"
+                android:textColor="?attr/metaTextColor"
+                android:paddingLeft="3dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:orientation="vertical">
+            <!--            17 dp씩-->
+            <TextView
+                android:text="가나다라마바사아자차카타파하"
+                android:id="@+id/schedule_1"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/sBarColor1"
+                android:lines="1"
+                android:visibility="gone"
+                android:textColor="?attr/textColor"
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/schedule_2"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/sBarColor2"
+                android:lines="1"
+                android:visibility="gone"
+                android:textColor="?attr/textColor"
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/schedule_3"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/sBarColor3"
+                android:lines="1"
+                android:visibility="gone"
+                android:textColor="?attr/textColor"
+                android:textSize="13sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

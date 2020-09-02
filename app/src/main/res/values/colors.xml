@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorBackgroundNoticeDark">#303030</color>
-    <color name="colorBackgroundNoticeLight">#D5D5D5</color>
+    <color name="colorBackgroundNoticeLight">#F0F0F0</color>
     <color name="colorLine">#33FFFFFF</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="mainColor">#0091FF</color>
@@ -13,4 +13,10 @@
     <color name="sBarColor1">#05C1E8</color>
     <color name="sBarColor2">#08FDFE</color>
     <color name="sBarColor3">#05E8BE</color>
+    
+    <drawable name="btnBackgroundBg">@color/colorBackgroundNoticeLight</drawable>
+    <drawable name="btnBackgroundTheme">@color/mainColor</drawable>
+
+<!--    <drawable name="btnBackgroundBg">?attr/bgColor</drawable>-->
+<!--    <drawable name="btnBackgroundTheme">?attr/appBarColor</drawable>-->
 </resources>

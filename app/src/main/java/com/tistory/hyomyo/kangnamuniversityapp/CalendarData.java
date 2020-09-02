@@ -21,6 +21,10 @@ public class CalendarData {
     private ArrayList<ArrayList<DateData>> calendar = new ArrayList<>(32);
 
     public CalendarData(int year, int month){
+        reset(year, month);
+    }
+
+    public void reset(int year, int month){
         this.currentMonth = month;
         this.currentYear = year;
         schedule = new HashMap<>();
@@ -40,7 +44,6 @@ public class CalendarData {
         for(d = startDay-1 ; d < lastDay + startDay -1 ; d++)
             days[d] = d-startDay+2;
     }
-
     private void setting(){
         Calendar cal = Calendar.getInstance();
 
@@ -109,4 +112,5 @@ public class CalendarData {
     public int getNum(){
         return 42;
     }
+
 }

@@ -46,7 +46,41 @@
                 android:text="29일"
                 android:textColor="?attr/metaTextColor"
                 android:textSize="15sp"
-                android:paddingEnd="20dp"/>
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"/>
+<!--            ?attr/selectableItemBackground-->
+            <LinearLayout
+                android:id="@+id/leftMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="?attr/selectableItemBackground"
+                app:layout_constraintEnd_toStartOf="@id/rightMonth">
+                <Button
+                    android:id="@+id/leftMonthBtn"
+                    android:background="@drawable/calendar_left_btn_selector"
+                    android:text="Previous"
+                    android:textColor="?attr/appBarColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/rightMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="?attr/selectableItemBackground"
+                app:layout_constraintEnd_toStartOf="@id/calender_date">
+                <Button
+                    android:id="@+id/rightMonthBtn"
+                    android:background="@drawable/calendar_right_btn_selector"
+                    android:text="Next"
+                    android:textColor="?attr/textColorReverse"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

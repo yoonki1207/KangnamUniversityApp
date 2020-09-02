@@ -62,6 +62,9 @@ public class CalendarFragment extends Fragment {
     private TextView monthText;
     private TextView yearText;
     private TextView dateText;
+
+    private Button leftMonth;
+    private Button rightMonth;
     private ScrollView scrollView;
     String[] current;
 
@@ -71,7 +74,7 @@ public class CalendarFragment extends Fragment {
         rootContext = context;
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,11 +87,14 @@ public class CalendarFragment extends Fragment {
         SimpleDateFormat monthIdFormat = new SimpleDateFormat("yyyy-MM-dd");
         current = monthIdFormat.format(currentDate).split("-");
 
-        currentCalendarData = new CalendarData(current[0], current[1]);
+        currentCalendarData =  new CalendarData(current[0], current[1]);
 
         yearText = rootView.findViewById(R.id.calender_year);
         monthText = rootView.findViewById(R.id.calender_month);
         dateText = rootView.findViewById(R.id.calender_date);
+
+        leftMonth = rootView.findViewById(R.id.leftMonthBtn);
+        rightMonth = rootView.findViewById(R.id.rightMonthBtn);
 
         //scrollView.computeScroll();
 
@@ -118,13 +124,41 @@ public class CalendarFragment extends Fragment {
             public boolean canScrollVertically(){
                 return false;
             }
-
-
         });
 
         //mAdapter.notifyDataSetChanged();
         Log.d("스케듈로그", Integer.parseInt(current[0])+" and "+Integer.parseInt(current[2]));
         getSchedule(Integer.parseInt(current[0]), Integer.parseInt(current[1]));
+
+        leftMonth.setOnClickListener(v -> {
+            int Y = Integer.parseInt(current[0]);
+            int M = Integer.parseInt(current[1]);
+            if(--M < 1){
+                M = 12;
+                --Y;
+            }
+            current[0] = String.format("%02d", Y);
+            current[1] = String.format("%02d", M);
+            yearText.setText(current[0]);
+            monthText.setText(current[1]+"월");
+            dateText.setText(current[2]+"일");
+            getSchedule(Y, M);
+        });
+
+        rightMonth.setOnClickListener(v -> {
+            int Y = Integer.parseInt(current[0]);
+            int M = Integer.parseInt(current[1]);
+            if(++M > 12){
+                M = 1;
+                ++Y;
+            }
+            current[0] = String.format("%02d", Y);
+            current[1] = String.format("%02d", M);
+            yearText.setText(current[0]);
+            monthText.setText(current[1]+"월");
+            dateText.setText(current[2]+"일");
+            getSchedule(Y, M);
+        });
 
         return rootView;
     }
@@ -176,6 +210,8 @@ public class CalendarFragment extends Fragment {
                     Log.d("데이터1", tmpScheduleData.size()+"");
                     try{
                         Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                            scheduleData.clear();
+                            currentCalendarData.reset(year, month);
                             scheduleData.addAll(tmpScheduleData);
                             for(ScheduleData s : tmpScheduleData){
                                 currentCalendarData.addData(s.getScheduleDate(), s.getSchedule());

@@ -14,7 +14,7 @@
         <item name="textColor">#383838</item>
         <item name="textColorReverse">#D5D5D5</item>
         <item name="metaTextColor">#606060</item>
-        <item name="bgColor">#f0f0f0</item>
+        <item name="bgColor">@color/colorBackgroundNoticeLight</item>
         <item name="bgColorDeep">#ffffff</item>
         <item name="lineColor">#a0a0a0</item>
         <item name="textHintColor">#898989</item>

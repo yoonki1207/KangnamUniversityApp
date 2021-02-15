@@ -30,11 +30,15 @@ import java.io.IOException;
 import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class NoticeViewFragment extends Fragment {
+    final private String TAG = "HTML STRING";
+
     private WebView noticeWebView;
     private String sortedHtml;
     private ArticleInfo article;
     private String url;
-    private final String style = "<style type=\"text/css\">img{ max-width: 1080px;}</style>";
+    private final String style = "<style type=\"text/css\">" +
+            "img{max-width:100%}header{background-color:#0091ffcc;position:fixed;width:100%}.title{color:#fff;padding:3px;font-size:1em;text-align:center;font-weight:100}body,h1{margin:0}.tbl_view{padding:75px 10px 10px}.clearfix{list-style:none}.clearfix,.clearfix *,.hide_txt{width:100%}.hide_txt{display:block;text-align:center;padding:3px 0;margin-bottom:10px;background-color:#0091ffcc;color:#fff}a{text-decoration:none}.clearfix a{display:block;margin:10px 0}" +
+            "</style>";
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_web_view_notice,container,false);
@@ -149,10 +153,11 @@ public class NoticeViewFragment extends Fragment {
 
     private String getSortedHtml(String html, Document document) { // 정제된 html얻기
         String sortedHtml;
+        Element element = new Element("HTML");
         if(article.hasFile()){
             Elements elements = document.select("div[class=tbody]");
             Elements elements2 = elements.select("ul");
-            Element element = elements2.get(2); // 첨부파일이 있는 tag=ul 얻기
+            element = elements2.get(2); // 첨부파일이 있는 tag=ul 얻기
             //이거 지금 보류해놓고 나중에 디자인 할때 다시 건들어야함.
 //            Elements e = element.select("a");
 //            String herfBox="";
@@ -162,14 +167,23 @@ public class NoticeViewFragment extends Fragment {
 //                herfBox += "<><>";
 //            }
             //link 들어갈 시 첨부파일 다운받는 기능
-            sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head>"+style+"</head><body>"+html+element.html()+"</body></html>";
-            sortedHtml = sortedHtml.replace("href=\"/","href=\"https://web.kangnam.ac.kr/");
-            sortedHtml = sortedHtml.replace("src=\"/","src=\"https://web.kangnam.ac.kr/");
+
         }else{
-            sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head>"+style+"</head><body>"+html+"</body></html>";
-            sortedHtml = sortedHtml.replace("src=\"/","src=\"https://web.kangnam.ac.kr/");
-        }
+
+        }//header추가해야함
+        sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head>"+style+"</head><header><h1 class=\"title\">"+article.getTitle()+"</h1></header><body>"+html+element.html()+"</body></html>";
+        sortedHtml = sortedHtml.replace("href=\"/","href=\"https://web.kangnam.ac.kr/");
+        sortedHtml = sortedHtml.replace("src=\"/","src=\"https://web.kangnam.ac.kr/");
+        //logLargeString(sortedHtml);
         return sortedHtml;
     }
 
+    public void logLargeString(String str){
+        if(str.length() > 3000){
+            Log.i(TAG, str.substring(0, 3000));
+            logLargeString(str.substring(3000));
+        }else{
+            Log.i(TAG, str);
+        }
+    }
 }

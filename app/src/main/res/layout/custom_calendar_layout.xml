@@ -11,75 +11,82 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:descendantFocusability="blocksDescendants">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             app:layout_constraintTop_toTopOf="parent">
+
             <TextView
                 android:id="@+id/calender_month"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7월"
                 android:paddingStart="20dp"
+                android:text="7월"
                 android:textColor="?attr/textColor"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/calender_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/calender_month"
-                app:layout_constraintBottom_toBottomOf="@id/calender_month"
                 android:paddingStart="10dp"
                 android:text="2020"
-                android:textSize="20sp"
-                android:textColor="?attr/textColor"/>
+                android:textColor="?attr/textColor"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/calender_month"
+                app:layout_constraintStart_toEndOf="@id/calender_month" />
+
             <TextView
                 android:id="@+id/calender_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:text="29일"
                 android:textColor="?attr/metaTextColor"
                 android:textSize="15sp"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"/>
-<!--            ?attr/selectableItemBackground-->
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--            ?attr/selectableItemBackground-->
             <LinearLayout
                 android:id="@+id/leftMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:background="?attr/selectableItemBackground"
-                app:layout_constraintEnd_toStartOf="@id/rightMonth">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/rightMonth"
+                app:layout_constraintTop_toTopOf="parent">
+
                 <Button
                     android:id="@+id/leftMonthBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/calendar_left_btn_selector"
                     android:text="Previous"
-                    android:textColor="?attr/appBarColor"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:textColor="?attr/appBarColor" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/rightMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:background="?attr/selectableItemBackground"
-                app:layout_constraintEnd_toStartOf="@id/calender_date">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/calender_date"
+                app:layout_constraintTop_toTopOf="parent">
+
                 <Button
                     android:id="@+id/rightMonthBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/calendar_right_btn_selector"
                     android:text="Next"
-                    android:textColor="?attr/textColorReverse"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:textColor="?attr/textColorReverse" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

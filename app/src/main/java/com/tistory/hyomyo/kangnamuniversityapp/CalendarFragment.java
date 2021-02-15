@@ -229,8 +229,6 @@ public class CalendarFragment extends Fragment {
 
                 }
 
-
-
             }).start();
         }catch (Exception ignored){
 

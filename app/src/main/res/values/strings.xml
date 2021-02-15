@@ -12,7 +12,7 @@
     <string name="sample_locate">연구실[홍길동]-(이000)</string>
     <string name="sample_email">yoonki1207@gmail.com</string>
     <string name="developer_email">피드백 이메일 : yoonki1207@gmail.com</string>
-    <string name="app_version">1.0.1 beta</string>
+    <string name="app_version">1.0.3 beta</string>
     <string name="fragment_setting_alarm_on_off">알람</string>
     <string name="channel_name">Channel name</string>
     <string name="channel_description">Channel Description</string>

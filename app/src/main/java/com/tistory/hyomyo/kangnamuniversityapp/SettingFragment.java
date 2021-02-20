@@ -7,15 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
-
-import com.tistory.hyomyo.kangnamuniversityapp.R;
 
 
 public class SettingFragment extends Fragment { // 알람 프레그먼트지만 설정으로 바꾸자 그냥
@@ -24,7 +21,7 @@ public class SettingFragment extends Fragment { // 알람 프레그먼트지만 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.fragment_setting, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_info, container, false);
         createNotificationChannel();
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")

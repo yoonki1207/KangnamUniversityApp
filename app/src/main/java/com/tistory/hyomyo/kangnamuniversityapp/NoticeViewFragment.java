@@ -136,8 +136,7 @@ public class NoticeViewFragment extends Fragment {
                             public void run() {
                                 noticeWebView.getSettings().setBuiltInZoomControls(true);//줌 가능
 //                                noticeWebView.getSettings().setSupportZoom(true);//줌 UI
-                                noticeWebView.loadData(sortedHtml,"text/html","UFT-8");
-                                Log.d("HTML","로드 데이터");
+                                noticeWebView.loadDataWithBaseURL(null, sortedHtml, "text/html", "UTF-8", "about:blank");
 //                            noticeWebView.loadUrl(sortedHtml);
                             }
                         });
@@ -174,7 +173,7 @@ public class NoticeViewFragment extends Fragment {
         sortedHtml = "<!doctype html><html xmls=\"http://www.w3.org/1999/xhtml\" lang=\"ko\"><head>"+style+"</head><header><h1 class=\"title\">"+article.getTitle()+"</h1></header><body>"+html+element.html()+"</body></html>";
         sortedHtml = sortedHtml.replace("href=\"/","href=\"https://web.kangnam.ac.kr/");
         sortedHtml = sortedHtml.replace("src=\"/","src=\"https://web.kangnam.ac.kr/");
-        //logLargeString(sortedHtml);
+//        logLargeString(sortedHtml);
         return sortedHtml;
     }
 

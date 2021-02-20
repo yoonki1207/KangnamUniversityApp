@@ -1,23 +1,32 @@
 package com.tistory.hyomyo.kangnamuniversityapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -54,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private ContactAddressResultFragment contactAddressResultFragment;
     private SettingFragment settingFragment;
     private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+
+    private Button loginBtn;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -61,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        IntroActivity.intoActivity.finish();
 
         // setting the current theme (aftger activity restart)
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
@@ -85,16 +99,48 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         toolbar = findViewById(R.id.main_toolbar);
+
+
+
+        //좌측 Drawer(서랍) 코드
+        drawerLayout = findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
 
-        // 앱바 좌측 메뉴
-//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
-//        getSupportActionBar().addOnMenuVisibilityListener(isVisible -> {
-//
-//        });
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
 
-//        actionBar.setDisplayShowTitleEnabled(false);
+        NavigationView navigationView;
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            item.setChecked(true);
+            drawerLayout.closeDrawers();
+
+            int id = item.getItemId();
+
+            switch(id){
+                case R.id.time_table:
+                    Log.d("Nav Log", "time table");
+                    break;
+                case R.id.map:
+                    Log.d("Nav Log", "map");
+                    break;
+                case R.id.setting:
+                    Log.d("Nav Log", "setting");
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        });
+
+        // 로그인 버튼
+        loginBtn = navigationView.getHeaderView(0).findViewById(R.id.login_btn);
+        loginBtn.setOnClickListener(v -> {
+            Log.d("Touch","버튼클릭됨");
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        });
 
 
         transaction = fragmentManager.beginTransaction();
@@ -131,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         int id = menuItem.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.appbar_action_theme_toggle:
                 if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -142,6 +188,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 finish();
                 startActivity(new Intent(MainActivity.this, MainActivity.this.getClass()));
                 break;
+            case android.R.id.home: {
+                drawerLayout.openDrawer(GravityCompat.START);
+
+                return true;
+            }
         }
         return true;
     }
@@ -243,4 +294,5 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 break;
         }
     }
+
 }

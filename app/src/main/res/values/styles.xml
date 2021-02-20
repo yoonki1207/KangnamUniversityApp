@@ -11,6 +11,7 @@
     </style>
 
     <style name="LightTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="textColor">#383838</item>
         <item name="textColorReverse">#D5D5D5</item>
         <item name="metaTextColor">#606060</item>
@@ -25,6 +26,7 @@
     </style>
 
     <style name="DarkTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/colorBackgroundNoticeDark</item>
         <item name="textColor">#D5D5D5</item>
         <item name="textColorReverse">#383838</item>
         <item name="metaTextColor">#e0e0e0</item>

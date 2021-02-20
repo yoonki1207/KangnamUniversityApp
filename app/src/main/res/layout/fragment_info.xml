@@ -43,6 +43,14 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/developer_email"
             android:textColor="?attr/metaTextColor"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            app:layout_constraintTop_toBottomOf="@id/app_version"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@string/developer_msg"/>
 
 <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
 <!--            android:layout_width="wrap_content"-->

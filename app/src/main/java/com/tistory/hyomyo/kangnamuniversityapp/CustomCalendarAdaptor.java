@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -64,6 +65,7 @@ public class CustomCalendarAdaptor extends RecyclerView.Adapter<CustomCalendarAd
         try{
             if(Integer.parseInt(dateString) == Integer.parseInt(current[2])){
                 holder.date.setTypeface(null, Typeface.BOLD);
+                holder.date.setPaintFlags(holder.date.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }
         }catch(Exception e){
 

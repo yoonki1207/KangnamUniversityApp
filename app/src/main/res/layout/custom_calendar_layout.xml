@@ -55,38 +55,36 @@
             <!--            ?attr/selectableItemBackground-->
             <LinearLayout
                 android:id="@+id/leftMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/outline_keyboard_arrow_left_black_48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/rightMonth"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="?attr/textColor">
 
                 <Button
                     android:id="@+id/leftMonthBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/calendar_left_btn_selector"
-                    android:text="Previous"
-                    android:textColor="?attr/appBarColor" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/rightMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/outline_keyboard_arrow_right_black_48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/calender_date"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="?attr/textColor">
 
                 <Button
                     android:id="@+id/rightMonthBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/calendar_right_btn_selector"
-                    android:text="Next"
-                    android:textColor="?attr/textColorReverse" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

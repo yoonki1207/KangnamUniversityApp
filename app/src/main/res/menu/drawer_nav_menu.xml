@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/time_table"
+            android:title="시간표(구현중)"
+            android:iconTint="?attr/textColor"/>
+        <item
+            android:id="@+id/map"
+            android:title="지도(구현중)"
+            android:iconTint="?attr/textColor"/>
+        <item
+            android:id="@+id/setting"
+            android:title="설정(구현중)"
+            android:iconTint="?attr/textColor"/>
+
+    </group>
+</menu>

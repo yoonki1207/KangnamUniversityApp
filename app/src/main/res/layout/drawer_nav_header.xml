@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:background="?attr/bgColor">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="10dp">
+        <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        tools:ignore="MissingConstraints"
+        android:src="@drawable/user_3"
+        android:id="@+id/nav_image"
+        android:tint="?attr/textColor"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginStart="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/string_nav_header_title"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="20sp"
+                android:id="@+id/nav_title"
+                android:textColor="?attr/textColor"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/string_nav_header_subtitle"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:id="@+id/nav_subtitle"
+                android:textColor="?attr/textColor"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="?attr/appBarColor">
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그인"
+            android:background="?attr/selectableItemBackground"
+            android:textColor="@color/colorWhite"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/appBarColor"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
+
+</LinearLayout>

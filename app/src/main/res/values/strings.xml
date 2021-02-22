@@ -30,6 +30,9 @@
     <string name="string_calender_next">다음 달</string>
     <string name="developer_msg"></string>
 
-    <string name="string_nav_header_title">홍길동</string>
-    <string name="string_nav_header_subtitle">201904000</string>
+    <string name="string_login">로그인</string>
+    <string name="string_logout">로그아웃</string>
+
+    <string name="string_nav_header_title">로그인이 필요합니다.</string>
+    <string name="string_nav_header_subtitle">로그인이 필요합니다.</string>
 </resources>

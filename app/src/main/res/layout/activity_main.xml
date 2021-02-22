@@ -40,6 +40,6 @@
         android:fitsSystemWindows="true"
         app:itemIconTint="?attr/textColor"
         app:itemTextColor="?attr/textColor"
-        android:backgroundTint="?attr/bgColor"
+        android:background="?attr/bgColor"
         />
 </androidx.drawerlayout.widget.DrawerLayout>

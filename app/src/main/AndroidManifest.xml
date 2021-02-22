@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme"
         android:usesCleartextTraffic="true"
-        android:name=".CookieApp">
+        tools:targetApi="m">
 <!--        <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />-->
         <service
@@ -39,7 +39,8 @@
         <activity android:name="com.tistory.hyomyo.kangnamuniversityapp.AddressResultPopupActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/DialogLightTheme"/>
-        <activity android:name="com.tistory.hyomyo.kangnamuniversityapp.IntroActivity">
+        <activity android:name="com.tistory.hyomyo.kangnamuniversityapp.IntroActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

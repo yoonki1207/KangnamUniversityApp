@@ -14,13 +14,16 @@ import androidx.navigation.Navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,8 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.tistory.hyomyo.kangnamuniversityapp.R.attr.appBarColor;
 /*
 https://www.flaticon.com/kr/packs/essential-set-2
 <div>아이콘 제작자 <a href="https://www.flaticon.com/kr/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/kr/" title="Flaticon">www.flaticon.com</a></div>
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private SettingFragment settingFragment;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
+    private LinearLayout linearBtnLayout;
 
     private Button loginBtn;
     private TextView txtNavName;
@@ -78,10 +84,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // setting the current theme (after activity restart)
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            super.setTheme(R.style.DarkTheme);
+        } else {
+            super.setTheme(R.style.LightTheme);
+        }
+
         mainActivity = MainActivity.this;
         setContentView(R.layout.activity_main);
-
-        IntroActivity.intoActivity.finish();
 
         //좌측 Drawer(서랍) 코드
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -89,21 +101,22 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         navigationView = findViewById(R.id.nav_view);
         txtNavName = navigationView.getHeaderView(0).findViewById(R.id.nav_name);
         txtNavNumber = navigationView.getHeaderView(0).findViewById(R.id.nav_number);
+        linearBtnLayout = navigationView.getHeaderView(0).findViewById(R.id.login_linear);
+        loginBtn = navigationView.getHeaderView(0).findViewById(R.id.login_btn);
 
+        // 이름, 학번 출력
         if(KNUData.getInstance().isLogin()){
             txtNavName.setText(KNUData.getInstance().getUserName());
             txtNavNumber.setText(KNUData.getInstance().getUserId());
+            loginBtn.setText(R.string.string_logout);
+            linearBtnLayout.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }else{
-
+            txtNavName.setText(R.string.string_nav_header_title);
+            txtNavNumber.setText(R.string.string_nav_header_subtitle);
+            loginBtn.setText(R.string.string_login);
+            // 수정 필요
+            linearBtnLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
-
-        // setting the current theme (aftger activity restart)
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.DarkTheme);
-        } else {
-            setTheme(R.style.LightTheme);
-        }
-
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -149,13 +162,18 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         });
 
         // 로그인 버튼
-        loginBtn = navigationView.getHeaderView(0).findViewById(R.id.login_btn);
         loginBtn.setOnClickListener(v -> {
-            Log.d("Touch","버튼클릭됨");
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            if(!KNUData.getInstance().isLogin()){
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }else{
+                drawerLayout.closeDrawers();
+                KNUData.getInstance().setLogin(false);
+                finish();
+                startActivity(new Intent(MainActivity.this, MainActivity.this.getClass()));
+                //recreate();
+            }
         });
-
 
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, homeFragment).commitAllowingStateLoss();

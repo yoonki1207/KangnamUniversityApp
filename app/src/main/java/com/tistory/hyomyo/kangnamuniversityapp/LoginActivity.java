@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -60,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         sendBtn.setOnClickListener(view -> {
-            queue.cancelAll(TAG);
+            if(queue!=null)
+                queue.cancelAll(TAG);
             login_param="user_id="+textId.getText()
                     +"&"
                     +"user_pwd="+textPassword.getText();
@@ -73,10 +75,13 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("RESPONSE", response);
             if(jsonIsValidAccount(response)){
                 KNUData.getInstance().setLogin(true);
-                queue.cancelAll(TAG);
+                if(queue!=null)
+                    queue.cancelAll(TAG);
                 MainActivity.mainActivity.recreate();
                 KNUData.getInstance().setUserId(textId.getText().toString());
                 this.finish();
+            }else{
+                Toast.makeText(LoginActivity.this, "존재하지 않는 아이디입니다.", Toast.LENGTH_SHORT).show();
             }
         }, error -> {
             Log.e("Error", "String Request status Code: "+error.networkResponse.statusCode+"");
@@ -92,34 +97,30 @@ public class LoginActivity extends AppCompatActivity {
                 return headers;
             }
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("user_id",textId.getText().toString().trim());
-                params.put("user_pwd", textPassword.getText().toString().trim());
-                return params;
-            }
-
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                Log.d("쿠키", response.headers.get("Set-Cookie"));
                 String str = response.headers.get("Set-Cookie");
                 if(str != null && !str.trim().equals("")){
-                    str = str.substring(str.indexOf("mast_name_e="), str.indexOf(";", str.indexOf("mast_name_e=")));
-                    str = str.replaceAll("mast_name_e=", "").replaceAll(";", "").trim();
-                    try {
-                        byte[] decode = Base64.getDecoder().decode(str);
-                        str = new String(decode, StandardCharsets.UTF_8);
-                        Log.d("이름", str);
+                    Log.d("문자열",str+"\n"+response.statusCode);
+                    try{
+                        str = str.substring(str.indexOf("mast_name_e="), str.indexOf(";", str.indexOf("mast_name_e=")) < 0 ? str.length() : str.indexOf(";", str.indexOf("mast_name_e=")));
+                        str = str.replaceAll("mast_name_e=", "").replaceAll(";", "").trim();
+                        try {
+                            byte[] decode = Base64.getDecoder().decode(str);
+                            str = new String(decode, StandardCharsets.UTF_8);
+                            Log.d("이름", str);
 
-                        str = URLDecoder.decode(str, "UTF-8");
+                            str = URLDecoder.decode(str, "UTF-8");
 
-                        Log.d("이름", str);
-                    } catch (Exception e) {
+                            Log.d("이름", str);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        KNUData.getInstance().setUserName(str);
+                    }catch (Exception e){
                         e.printStackTrace();
                     }
-                    KNUData.getInstance().setUserName(str);
                 }
                 CookieApp.get().checkSessionCookie(response.headers);
                 return super.parseNetworkResponse(response);

@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -66,15 +67,35 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private DrawerLayout drawerLayout;
 
     private Button loginBtn;
+    private TextView txtNavName;
+    private TextView txtNavNumber;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
+    public static MainActivity mainActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainActivity = MainActivity.this;
+        setContentView(R.layout.activity_main);
 
         IntroActivity.intoActivity.finish();
+
+        //좌측 Drawer(서랍) 코드
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView;
+        navigationView = findViewById(R.id.nav_view);
+        txtNavName = navigationView.getHeaderView(0).findViewById(R.id.nav_name);
+        txtNavNumber = navigationView.getHeaderView(0).findViewById(R.id.nav_number);
+
+        if(KNUData.getInstance().isLogin()){
+            txtNavName.setText(KNUData.getInstance().getUserName());
+            txtNavNumber.setText(KNUData.getInstance().getUserId());
+        }else{
+
+        }
 
         // setting the current theme (aftger activity restart)
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
@@ -83,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             setTheme(R.style.LightTheme);
         }
 
-        setContentView(R.layout.activity_main);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -100,18 +120,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         toolbar = findViewById(R.id.main_toolbar);
 
-
-
-        //좌측 Drawer(서랍) 코드
-        drawerLayout = findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
 
-        NavigationView navigationView;
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
             item.setChecked(true);
             drawerLayout.closeDrawers();
